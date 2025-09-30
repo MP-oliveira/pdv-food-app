@@ -42,9 +42,25 @@ const Header = ({ user, onMenuClick }) => {
     setNotifications(prev => prev.filter(n => n.id !== notificationId))
   }
 
-  const markAllAsRead = () => {
+  const markAllAsRead = (e) => {
+    e.stopPropagation()
     setNotifications(prev => prev.map(n => ({ ...n, read: true })))
   }
+
+  // Fechar dropdowns quando clicar fora
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showNotifications && !event.target.closest('.header-notifications')) {
+        setShowNotifications(false)
+      }
+      if (showUserMenu && !event.target.closest('.header-user')) {
+        setShowUserMenu(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [showNotifications, showUserMenu])
 
   const handleSignOut = async () => {
     try {
