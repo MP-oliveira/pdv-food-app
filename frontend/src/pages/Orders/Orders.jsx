@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { Clock, Users, MapPin, Phone, Eye, CheckCircle, XCircle, Grid3X3 } from 'lucide-react'
+import CancelOrderModal from '../../components/CancelOrderModal/CancelOrderModal'
 import './Orders.css'
 
 const Orders = () => {
@@ -11,6 +12,8 @@ const Orders = () => {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('orders') // 'orders' ou 'tables'
   const [draggedOrder, setDraggedOrder] = useState(null)
+  const [showCancelModal, setShowCancelModal] = useState(false)
+  const [orderToCancel, setOrderToCancel] = useState(null)
 
   // Estados das colunas
   const [pendingOrders, setPendingOrders] = useState([])
@@ -147,6 +150,23 @@ const Orders = () => {
     setShowModal(true)
   }
 
+  const openCancelModal = (order) => {
+    setOrderToCancel(order)
+    setShowCancelModal(true)
+  }
+
+  const handleCancelOrder = (cancelData) => {
+    console.log('Pedido cancelado:', orderToCancel, cancelData)
+    
+    // Remover pedido das listas
+    setPendingOrders(prev => prev.filter(o => o.id !== orderToCancel.id))
+    setConfirmedOrders(prev => prev.filter(o => o.id !== orderToCancel.id))
+    setSentOrders(prev => prev.filter(o => o.id !== orderToCancel.id))
+    
+    setShowCancelModal(false)
+    setOrderToCancel(null)
+  }
+
   const OrderCard = ({ order, onMove }) => {
     // Gera um número de pedido formatado
     const orderNumber = String(order.id).padStart(3, '0')
@@ -210,6 +230,17 @@ const Orders = () => {
           <div className="order-total-badge">
             R$ {order.total.toFixed(2).replace('.', ',')}
           </div>
+          
+          <button 
+            className="btn-action btn-cancel"
+            onClick={(e) => {
+              e.stopPropagation()
+              openCancelModal(order)
+            }}
+            title="Cancelar pedido"
+          >
+            <XCircle size={18} />
+          </button>
           
           {order.status === 'pending' && (
             <button 
@@ -546,6 +577,17 @@ const Orders = () => {
       )}
 
       {showModal && <OrderModal />}
+      
+      {/* Cancel Order Modal */}
+      <CancelOrderModal
+        isOpen={showCancelModal}
+        onClose={() => {
+          setShowCancelModal(false)
+          setOrderToCancel(null)
+        }}
+        order={orderToCancel}
+        onConfirmCancel={handleCancelOrder}
+      />
     </div>
   )
 }

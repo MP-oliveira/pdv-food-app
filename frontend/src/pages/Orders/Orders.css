@@ -438,6 +438,17 @@
   transform: translateY(-1px);
 }
 
+.btn-cancel {
+  background: #ef4444;
+  flex: 0 0 auto;
+  padding: 12px;
+}
+
+.btn-cancel:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
 /* Modal */
 .modal-overlay {
   position: fixed;
