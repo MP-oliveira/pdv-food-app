@@ -23,8 +23,8 @@ const Orders = () => {
   // Dados de exemplo (simulando pedidos)
   useEffect(() => {
     const mockOrders = [
-      {
-        id: 1,
+    {
+      id: 1,
         type: 'DELIVERY',
         customer: 'Maria Silva',
         time: new Date(Date.now() - 5 * 60 * 1000), // 5 minutos atrás
@@ -37,9 +37,9 @@ const Orders = () => {
           { name: 'X-Burger Picanha', quantity: 1, price: 24.90 },
           { name: 'Coca-Cola 600ml', quantity: 2, price: 8.50 }
         ]
-      },
-      {
-        id: 2,
+    },
+    {
+      id: 2,
         type: 'MESA',
         customer: 'João Santos',
         time: new Date(Date.now() - 15 * 60 * 1000), // 15 minutos atrás
@@ -512,7 +512,7 @@ const Orders = () => {
               ))}
             </div>
           </div>
-        </div>
+                  </div>
       ) : (
         <div className="tables-board">
           <div className="tables-grid">
@@ -520,7 +520,7 @@ const Orders = () => {
               <TableCard key={table.id} table={table} />
             ))}
           </div>
-        </div>
+      </div>
       )}
 
       {showModal && <OrderModal />}

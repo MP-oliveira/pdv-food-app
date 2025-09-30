@@ -1,7 +1,7 @@
-/* Kitchen Management - Design Moderno e Clean */
+/* Kitchen Management - Cards Estilo Monitor */
 .kitchen-container {
   height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  background: #f8fafc;
   display: flex;
   flex-direction: column;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -17,11 +17,9 @@
 }
 
 .kitchen-header h1 {
-  font-size: 28px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1e293b;
   margin: 0 0 20px 0;
 }
 
@@ -39,12 +37,6 @@
   min-width: 140px;
   text-align: center;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
-}
-
-.stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .stat-label {
@@ -163,46 +155,28 @@
   background: #94a3b8;
 }
 
-/* Cards de pedidos - Design Clean e Chic */
+/* Cards de pedidos - Exatamente como Monitor */
 .kitchen-order-card {
   background: white;
-  border: 1px solid #e5e7eb;
+  border: none;
   border-radius: 16px;
-  padding: 18px;
-  margin-bottom: 12px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
   cursor: grab;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-}
-
-.kitchen-order-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(180deg, #3b82f6, #8b5cf6);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.kitchen-order-card:hover::before {
-  opacity: 1;
 }
 
 .kitchen-order-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  border-color: #cbd5e1;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .kitchen-order-card:active {
   cursor: grabbing;
   transform: scale(0.99);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
 /* Estados de drag */
@@ -220,9 +194,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 6px;
 }
 
 .order-info {
@@ -232,19 +204,22 @@
 }
 
 .order-number {
+  background: #93c5fd;
+  color: white;
   font-size: 13px;
   font-weight: 700;
-  color: #3b82f6;
-  letter-spacing: 0.5px;
+  padding: 5px 14px;
+  border-radius: 10px;
+  letter-spacing: 0.3px;
 }
 
 .order-priority {
   padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 9px;
+  border-radius: 10px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.5px;
 }
 
 .order-time {
@@ -253,106 +228,101 @@
   gap: 5px;
   color: #94a3b8;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .order-customer {
-  margin-bottom: 12px;
+  margin-bottom: 4px;
 }
 
 .order-customer strong {
-  font-size: 16px;
+  font-size: 18px;
   color: #1e293b;
   font-weight: 600;
   display: block;
-  margin-bottom: 8px;
 }
 
 .table-info {
-  background: #eff6ff;
-  color: #3b82f6;
+  background: #f9a8d4;
+  color: white;
   padding: 4px 12px;
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   display: inline-block;
-  border: 1px solid #dbeafe;
+  margin-top: 8px;
 }
 
 .delivery-info {
-  background: #fdf2f8;
-  color: #ec4899;
+  background: #f9a8d4;
+  color: white;
   padding: 4px 12px;
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   display: inline-block;
-  border: 1px solid #fce7f3;
+  margin-top: 8px;
 }
 
-/* Itens do pedido - Clean Design */
+/* Itens do pedido - Layout Monitor */
 .order-items {
   margin-bottom: 14px;
+  margin-top: 12px;
 }
 
 .order-item {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 0;
-  border-bottom: 1px dashed #e5e7eb;
-  font-size: 13px;
+  padding: 8px 0;
+  font-size: 14px;
 }
 
 .order-item:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+  margin-bottom: 0;
 }
 
 .item-quantity {
-  background: #f1f5f9;
-  color: #3b82f6;
-  padding: 5px 10px;
+  background: #e2e8f0;
+  color: #64748b;
+  padding: 4px 10px;
   border-radius: 8px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   min-width: 32px;
   text-align: center;
-  border: 1px solid #e2e8f0;
 }
 
 .item-name {
   flex: 1;
   color: #1e293b;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 14px;
   line-height: 1.4;
 }
 
 .item-notes {
-  color: #d97706;
-  font-size: 11px;
+  color: #94a3b8;
+  font-size: 12px;
   font-style: italic;
-  background: #fef3c7;
-  padding: 3px 8px;
-  border-radius: 6px;
-  border: 1px solid #fde68a;
+  display: block;
+  margin-left: 42px;
+  margin-top: -4px;
 }
 
 .item-time {
-  background: #fef3c7;
-  color: #d97706;
+  background: #fcd34d;
+  color: white;
   padding: 4px 10px;
-  border-radius: 20px;
+  border-radius: 8px;
   font-size: 11px;
   font-weight: 600;
-  border: 1px solid #fde68a;
 }
 
 .order-actions {
   display: flex;
   gap: 8px;
-  justify-content: flex-end;
+  margin-top: 14px;
 }
 
 .action-btn {
@@ -360,61 +330,54 @@
   border-radius: 10px;
   padding: 10px 16px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   flex: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 .view-btn {
-  background: white;
+  background: #f1f5f9;
   color: #64748b;
-  flex: 0;
+  flex: 0 0 auto;
   padding: 10px;
-  border: 1px solid #e5e7eb;
 }
 
 .view-btn:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
+  background: #e2e8f0;
 }
 
 .start-btn {
-  background: #fbbf24;
+  background: #fcd34d;
   color: white;
 }
 
 .start-btn:hover {
-  background: #f59e0b;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+  background: #fbbf24;
 }
 
 .ready-btn {
-  background: #10b981;
+  background: #6ee7b7;
   color: white;
 }
 
 .ready-btn:hover {
-  background: #059669;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+  background: #34d399;
 }
 
 .delivered-btn {
-  background: #64748b;
+  background: #9ca3af;
   color: white;
-  padding: 10px 16px;
 }
 
 .delivered-btn:hover {
-  background: #475569;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(71, 85, 105, 0.4);
+  background: #6b7280;
 }
 
 /* Modal */
