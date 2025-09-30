@@ -1,40 +1,48 @@
-/* Kitchen Management - Visual similar ao Sischef */
+/* Kitchen Management - UX/UI Otimizado */
 .kitchen-container {
   height: 100vh;
   background: #f8fafc;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow: hidden;
 }
 
-/* Header com estatísticas */
+/* Sidebar fixa com estatísticas */
 .kitchen-header {
+  width: 280px;
   background: white;
-  padding: 24px;
-  border-bottom: 1px solid #e2e8f0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-right: 1px solid #e2e8f0;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  overflow-y: auto;
+  flex-shrink: 0;
 }
 
 .kitchen-header h1 {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
   color: #1e293b;
-  margin: 0 0 20px 0;
+  margin: 0;
 }
 
 .kitchen-stats {
   display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .stat-card {
-  background: #f8fafc;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 16px 20px;
-  min-width: 120px;
-  text-align: center;
+  border-radius: 10px;
+  padding: 14px 16px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .stat-label {
@@ -70,20 +78,21 @@
 .kitchen-board {
   flex: 1;
   display: flex;
-  gap: 0;
+  gap: 16px;
   padding: 24px;
   overflow: hidden;
+  background: #f8fafc;
 }
 
 .kitchen-column {
   flex: 1;
   background: white;
-  border-radius: 12px;
-  margin: 0 8px;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e5e7eb;
+  overflow: hidden;
 }
 
 /* Headers das colunas */
@@ -161,29 +170,30 @@
   background: #94a3b8;
 }
 
-/* Cards de pedidos da cozinha */
+/* Cards de pedidos da cozinha - Redesenhados */
 .kitchen-order-card {
   background: white;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 12px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
   cursor: grab;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   position: relative;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid transparent;
 }
 
 .kitchen-order-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-color: #3b82f6;
 }
 
 .kitchen-order-card:active {
   cursor: grabbing;
-  transform: rotate(5deg) scale(1.02);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  transform: scale(0.98);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
   z-index: 1000;
 }
 
@@ -201,34 +211,38 @@
 .order-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
+  align-items: flex-start;
+  margin-bottom: 12px;
 }
 
 .order-info {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .order-number {
-  background: #f1f5f9;
-  color: #64748b;
-  padding: 4px 8px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  padding: 4px 10px;
   border-radius: 6px;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  width: fit-content;
 }
 
 .order-priority {
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  background-color: currentColor;
+  color: white;
+  width: fit-content;
 }
 
 .order-time {
@@ -236,66 +250,78 @@
   align-items: center;
   gap: 4px;
   color: #64748b;
-  font-size: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  background: #f8fafc;
+  padding: 4px 8px;
+  border-radius: 6px;
 }
 
 .order-customer {
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 .order-customer strong {
-  font-size: 16px;
+  font-size: 15px;
   color: #1e293b;
   font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
 }
 
 .table-info {
-  background: #3b82f6;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
   color: white;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
   font-weight: 600;
+  display: inline-block;
 }
 
 .delivery-info {
-  background: #ec4899;
+  background: linear-gradient(135deg, #ec4899, #db2777);
   color: white;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
   font-weight: 600;
+  display: inline-block;
 }
 
-/* Itens do pedido */
+/* Itens do pedido - Redesenhados */
 .order-items {
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 10px;
 }
 
 .order-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 0;
-  border-bottom: 1px solid #f1f5f9;
+  padding: 8px;
+  background: white;
+  border-radius: 6px;
+  margin-bottom: 6px;
   font-size: 13px;
 }
 
 .order-item:last-child {
-  border-bottom: none;
+  margin-bottom: 0;
 }
 
 .item-quantity {
-  background: #e2e8f0;
-  color: #475569;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  min-width: 20px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  min-width: 26px;
   text-align: center;
 }
 
@@ -303,46 +329,56 @@
   flex: 1;
   color: #1e293b;
   font-weight: 500;
+  font-size: 13px;
 }
 
 .item-notes {
   color: #f59e0b;
   font-size: 11px;
   font-style: italic;
+  background: #fffbeb;
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
 .item-time {
-  background: #fef3c7;
-  color: #d97706;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 10px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: white;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
   font-weight: 600;
 }
 
 .order-actions {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   justify-content: flex-end;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #f1f5f9;
 }
 
 .action-btn {
   border: none;
   border-radius: 8px;
-  padding: 8px;
+  padding: 8px 12px;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 6px;
   font-size: 12px;
   font-weight: 600;
+  flex: 1;
 }
 
 .view-btn {
   background: #f1f5f9;
   color: #64748b;
+  flex: 0;
+  padding: 8px;
 }
 
 .view-btn:hover {
@@ -351,34 +387,37 @@
 }
 
 .start-btn {
-  background: #f59e0b;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
   color: white;
 }
 
 .start-btn:hover {
-  background: #d97706;
-  transform: scale(1.05);
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(251, 191, 36, 0.3);
 }
 
 .ready-btn {
-  background: #10b981;
+  background: linear-gradient(135deg, #34d399, #10b981);
   color: white;
 }
 
 .ready-btn:hover {
-  background: #059669;
-  transform: scale(1.05);
+  background: linear-gradient(135deg, #10b981, #059669);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
 }
 
 .delivered-btn {
-  background: #6b7280;
+  background: linear-gradient(135deg, #64748b, #475569);
   color: white;
   padding: 8px 12px;
 }
 
 .delivered-btn:hover {
-  background: #4b5563;
-  transform: scale(1.05);
+  background: linear-gradient(135deg, #475569, #334155);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(71, 85, 105, 0.3);
 }
 
 /* Modal */
