@@ -8,8 +8,8 @@ const Header = ({ user, onMenuClick }) => {
   const [showNotifications, setShowNotifications] = useState(false)
   const { signOut } = useAuth()
   
-  // Notificações mockadas
-  const notifications = [
+  // Notificações com estado
+  const [notifications, setNotifications] = useState([
     {
       id: 1,
       title: 'Novo Pedido #123',
@@ -34,9 +34,17 @@ const Header = ({ user, onMenuClick }) => {
       read: true,
       type: 'stock'
     }
-  ]
+  ])
   
   const unreadCount = notifications.filter(n => !n.read).length
+
+  const handleNotificationClick = (notificationId) => {
+    setNotifications(prev => prev.filter(n => n.id !== notificationId))
+  }
+
+  const markAllAsRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })))
+  }
 
   const handleSignOut = async () => {
     try {
@@ -105,6 +113,7 @@ const Header = ({ user, onMenuClick }) => {
                     <div 
                       key={notification.id} 
                       className={`notification-item ${!notification.read ? 'unread' : ''}`}
+                      onClick={() => handleNotificationClick(notification.id)}
                     >
                       <div className="notification-content">
                         <h4>{notification.title}</h4>
@@ -121,7 +130,12 @@ const Header = ({ user, onMenuClick }) => {
               
               {notifications.length > 0 && (
                 <div className="notifications-footer">
-                  <button className="mark-all-read">Marcar todas como lidas</button>
+                  <button 
+                    className="mark-all-read"
+                    onClick={markAllAsRead}
+                  >
+                    Marcar todas como lidas
+                  </button>
                 </div>
               )}
             </div>
