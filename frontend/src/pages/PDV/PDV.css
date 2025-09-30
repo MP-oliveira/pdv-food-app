@@ -490,25 +490,79 @@
 
 /* Footer do Carrinho */
 .cart-footer {
-  padding: 24px;
-  border-top: 1px solid #e2e8f0;
+  padding: 20px;
+  border-top: 2px solid #e2e8f0;
   background: #f8fafc;
 }
 
-.cart-total {
+.cart-totals {
   margin-bottom: 16px;
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
 }
 
-.cart-total h3 {
+.subtotal-row,
+.discount-row,
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.subtotal-row span,
+.discount-row span {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.discount-row {
+  color: var(--color-success);
+}
+
+.discount-amount {
+  color: var(--color-success) !important;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.remove-discount-btn {
+  background: #fee2e2;
+  color: #ef4444;
+  border: none;
+  border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.remove-discount-btn:hover {
+  background: #fecaca;
+}
+
+.total-row {
+  padding-top: 12px;
+  border-top: 2px solid #e2e8f0;
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+.total-row h3 {
   font-size: 20px;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--color-primary-blue);
   margin: 0;
-  text-align: center;
-  padding: 16px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  color: white;
-  border-radius: 12px;
 }
 
 .cart-actions {
@@ -516,15 +570,17 @@
   gap: 12px;
 }
 
-.btn-secondary, .btn-primary {
+.btn-secondary, .btn-primary, .btn-discount {
   flex: 1;
   padding: 12px 16px;
   border: none;
   border-radius: 12px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 .btn-secondary {
@@ -538,15 +594,29 @@
   color: #475569;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #10b981, #059669);
+.btn-discount {
+  background: var(--color-primary-yellow);
   color: white;
-  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
 }
 
-.btn-primary:hover {
+.btn-discount:hover {
+  background: #E67E22;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.btn-primary {
+  background: var(--color-success);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #229954;
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
 }
 
 /* Responsividade */

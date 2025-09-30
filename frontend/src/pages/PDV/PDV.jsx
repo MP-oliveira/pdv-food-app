@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { Search, Plus, Minus, ShoppingCart, Trash2 } from 'lucide-react'
 import PaymentModal from '../../components/PaymentModal/PaymentModal'
+import DiscountModal from '../../components/DiscountModal/DiscountModal'
 import './PDV.css'
 
 const PDV = () => {
@@ -14,6 +15,8 @@ const PDV = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [showPaymentModal, setShowPaymentModal] = useState(false)
+  const [showDiscountModal, setShowDiscountModal] = useState(false)
+  const [discount, setDiscount] = useState(null)
 
   // Buscar categorias
   useEffect(() => {
@@ -141,8 +144,25 @@ const PDV = () => {
     setCart(prevCart => prevCart.filter(item => item.id !== productId))
   }
 
-  const getTotal = () => {
+  const getSubtotal = () => {
     return cart.reduce((total, item) => total + (parseFloat(item.price) * item.quantity), 0)
+  }
+
+  const getTotal = () => {
+    const subtotal = getSubtotal()
+    if (discount) {
+      return subtotal - discount.amount
+    }
+    return subtotal
+  }
+
+  const handleApplyDiscount = (discountData) => {
+    setDiscount(discountData)
+    setShowDiscountModal(false)
+  }
+
+  const removeDiscount = () => {
+    setDiscount(null)
   }
 
   const formatPrice = (price) => {
@@ -171,9 +191,11 @@ const PDV = () => {
 
   const handlePaymentComplete = (paymentData) => {
     console.log('Pagamento concluído:', paymentData)
+    console.log('Desconto aplicado:', discount)
     // Aqui você pode enviar para o backend
-    // Limpar carrinho após pagamento
+    // Limpar carrinho e desconto após pagamento
     setCart([])
+    setDiscount(null)
     setShowPaymentModal(false)
   }
 
@@ -338,28 +360,76 @@ const PDV = () => {
 
           {cart.length > 0 && (
             <div className="cart-footer">
-              <div className="cart-total">
-                <h3>TOTAL: {formatPrice(getTotal())}</h3>
+              <div className="cart-totals">
+                <div className="subtotal-row">
+                  <span>Subtotal:</span>
+                  <span>{formatPrice(getSubtotal())}</span>
+                </div>
+                
+                {discount && (
+                  <div className="discount-row">
+                    <span>
+                      Desconto ({discount.type === 'percentage' ? `${discount.value}%` : 
+                               discount.type === 'coupon' ? discount.value : 
+                               'Fixo'}):
+                    </span>
+                    <span className="discount-amount">
+                      - {formatPrice(discount.amount)}
+                      <button 
+                        className="remove-discount-btn"
+                        onClick={removeDiscount}
+                        title="Remover desconto"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  </div>
+                )}
+                
+                <div className="total-row">
+                  <h3>TOTAL:</h3>
+                  <h3>{formatPrice(getTotal())}</h3>
+                </div>
               </div>
+              
               <div className="cart-actions">
                 <button 
                   className="btn-secondary"
-                  onClick={() => setCart([])}
+                  onClick={() => {
+                    setCart([])
+                    setDiscount(null)
+                  }}
                 >
                   Limpar
                 </button>
+                {!discount && (
+                  <button 
+                    className="btn-discount"
+                    onClick={() => setShowDiscountModal(true)}
+                  >
+                    Desconto
+                  </button>
+                )}
                 <button 
                   className="btn-primary"
                   onClick={() => setShowPaymentModal(true)}
                   disabled={cart.length === 0}
                 >
-                  Finalizar Pedido
+                  Finalizar
                 </button>
               </div>
             </div>
           )}
         </div>
       </div>
+
+      {/* Discount Modal */}
+      <DiscountModal
+        isOpen={showDiscountModal}
+        onClose={() => setShowDiscountModal(false)}
+        orderTotal={getSubtotal()}
+        onApplyDiscount={handleApplyDiscount}
+      />
 
       {/* Payment Modal */}
       <PaymentModal
