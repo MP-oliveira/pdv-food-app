@@ -223,7 +223,7 @@
 }
 
 .order-number {
-  background: #5B9BD5;
+  background: var(--color-primary-blue);
   color: white;
   font-size: 18px;
   font-weight: 700;
@@ -232,7 +232,7 @@
 }
 
 .table-badge {
-  background: #C65D9B;
+  background: var(--color-primary-pink);
   color: white;
   padding: 8px 20px;
   border-radius: 10px;
@@ -241,7 +241,7 @@
 }
 
 .delivery-badge {
-  background: #C65D9B;
+  background: var(--color-primary-pink);
   color: white;
   padding: 8px 20px;
   border-radius: 10px;
@@ -323,13 +323,13 @@
 }
 
 .item-note {
-  color: #F39C12;
+  color: var(--color-primary-yellow);
   font-size: 15px;
   font-style: italic;
 }
 
 .item-prep-time {
-  background: #F39C12;
+  background: var(--color-primary-yellow);
   color: white;
   padding: 6px 12px;
   border-radius: 8px;
@@ -370,7 +370,7 @@
 }
 
 .btn-ready {
-  background: #27AE60;
+  background: var(--color-success);
 }
 
 .btn-ready:hover {

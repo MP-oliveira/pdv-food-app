@@ -1,0 +1,31 @@
+/* Paleta de Cores Padrão do Projeto */
+:root {
+  /* Cores Principais */
+  --color-primary-blue: #5B9BD5;
+  --color-primary-pink: #C65D9B;
+  --color-primary-yellow: #F39C12;
+  --color-primary-green: #27AE60;
+  
+  /* Cores de Status */
+  --color-success: #27AE60;
+  --color-warning: #F39C12;
+  --color-danger: #ef4444;
+  --color-info: #5B9BD5;
+  
+  /* Cores de Texto */
+  --color-text-primary: #2c3e50;
+  --color-text-secondary: #7f8c8d;
+  --color-text-light: #94a3b8;
+  --color-text-white: #ffffff;
+  
+  /* Cores de Fundo */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f7f9fa;
+  --color-bg-tertiary: #f8fafc;
+  --color-bg-gray: #ecf0f1;
+  
+  /* Cores de Border */
+  --color-border-light: #e8ecef;
+  --color-border-medium: #d1d5db;
+  --color-border-dark: #cbd5e1;
+}

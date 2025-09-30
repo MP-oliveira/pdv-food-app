@@ -147,87 +147,109 @@ const Orders = () => {
     setShowModal(true)
   }
 
-  const OrderCard = ({ order, onMove }) => (
-    <div 
-      className="order-card"
-      draggable
-      onDragStart={(e) => handleDragStart(e, order)}
-      onDragEnd={handleDragEnd}
-      onClick={() => openOrderModal(order)}
-    >
-      <div className="order-header">
-        <span className="order-type">{order.type}</span>
-        <span className="order-time">
-          <Clock size={12} />
-          {formatTime(order.time)}
-        </span>
-      </div>
-      
-      <div className="order-customer">
-        <strong>{order.customer}</strong>
-      </div>
-      
-      {order.type === 'DELIVERY' && (
-        <div className="order-address">
-          <MapPin size={12} />
-          {order.address}
+  const OrderCard = ({ order, onMove }) => {
+    // Gera um número de pedido formatado
+    const orderNumber = String(order.id).padStart(3, '0')
+    
+    return (
+      <div 
+        className="order-card"
+        draggable
+        onDragStart={(e) => handleDragStart(e, order)}
+        onDragEnd={handleDragEnd}
+        onClick={() => openOrderModal(order)}
+      >
+        {/* Número do pedido e Mesa/Delivery no topo */}
+        <div className="card-top">
+          <span className="order-number">#{orderNumber}</span>
+          {order.tableNumber && (
+            <span className="table-badge">Mesa {order.tableNumber}</span>
+          )}
+          {order.type === 'DELIVERY' && !order.tableNumber && (
+            <span className="delivery-badge">DELIVERY</span>
+          )}
         </div>
-      )}
-      
-      {order.type === 'MESA' && (
-        <div className="order-table">
-          <Users size={12} />
-          Mesa {order.tableNumber}
+
+        {/* Nome do cliente e tempo */}
+        <div className="card-customer">
+          <strong>{order.customer}</strong>
+          <span className="card-time">
+            <Clock size={14} />
+            {formatTime(order.time)}
+          </span>
         </div>
-      )}
-      
-      {order.platform && (
-        <div className="order-platform">
-          {order.platform}
-        </div>
-      )}
-      
-      <div className="order-total">
-        R$ {order.total.toFixed(2).replace('.', ',')}
-      </div>
-      
-      <div className="order-actions">
-        <button 
-          className="action-btn view-btn"
-          onClick={(e) => {
-            e.stopPropagation()
-            openOrderModal(order)
-          }}
-        >
-          <Eye size={14} />
-        </button>
         
-        {order.status === 'pending' && (
-          <button 
-            className="action-btn confirm-btn"
-            onClick={(e) => {
-              e.stopPropagation()
-              onMove(order.id, 'confirmed')
-            }}
-          >
-            <CheckCircle size={14} />
-          </button>
-        )}
+        {/* Itens do pedido */}
+        <div className="card-items">
+          {order.items.map((item, index) => (
+            <div key={index} className="card-item">
+              <span className="item-qty">{item.quantity}x</span>
+              <div className="item-details">
+                <span className="item-title">{item.name}</span>
+              </div>
+              <span className="item-price">R$ {(item.quantity * item.price).toFixed(2).replace('.', ',')}</span>
+            </div>
+          ))}
+          
+          {/* Informações adicionais */}
+          {order.type === 'DELIVERY' && order.platform && (
+            <div className="order-platform-info">
+              <MapPin size={14} />
+              <span>{order.platform}</span>
+            </div>
+          )}
+          {order.type === 'DELIVERY' && order.address && (
+            <div className="order-address-info">
+              <span>{order.address}</span>
+            </div>
+          )}
+        </div>
         
-        {order.status === 'confirmed' && (
-          <button 
-            className="action-btn send-btn"
-            onClick={(e) => {
-              e.stopPropagation()
-              onMove(order.id, 'sent')
-            }}
-          >
-            Enviar
-          </button>
-        )}
+        {/* Total e Botões de ação */}
+        <div className="card-actions">
+          <div className="order-total-badge">
+            R$ {order.total.toFixed(2).replace('.', ',')}
+          </div>
+          
+          {order.status === 'pending' && (
+            <button 
+              className="btn-action btn-confirm"
+              onClick={(e) => {
+                e.stopPropagation()
+                onMove(order.id, 'confirmed')
+              }}
+            >
+              CONFIRMAR
+            </button>
+          )}
+          
+          {order.status === 'confirmed' && (
+            <button 
+              className="btn-action btn-send"
+              onClick={(e) => {
+                e.stopPropagation()
+                onMove(order.id, 'sent')
+              }}
+            >
+              ENVIAR
+            </button>
+          )}
+          
+          {order.status === 'sent' && (
+            <button 
+              className="btn-action btn-delivered"
+              onClick={(e) => {
+                e.stopPropagation()
+                console.log('Pedido entregue:', order.id)
+              }}
+            >
+              FINALIZAR
+            </button>
+          )}
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 
   const OrderModal = () => {
     if (!selectedOrder) return null

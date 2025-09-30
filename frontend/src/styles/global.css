@@ -1,3 +1,6 @@
+/* Importar paleta de cores */
+@import './colors.css';
+
 /* Reset e configurações básicas */
 * {
   margin: 0;
