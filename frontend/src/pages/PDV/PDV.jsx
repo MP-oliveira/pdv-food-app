@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { Search, Plus, Minus, ShoppingCart, Trash2 } from 'lucide-react'
+import PaymentModal from '../../components/PaymentModal/PaymentModal'
 import './PDV.css'
 
 const PDV = () => {
@@ -12,6 +13,7 @@ const PDV = () => {
   const [cart, setCart] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [showPaymentModal, setShowPaymentModal] = useState(false)
 
   // Buscar categorias
   useEffect(() => {
@@ -165,6 +167,14 @@ const PDV = () => {
     
     const key = categoryName?.toLowerCase() || 'default'
     return colorMap[key] || colorMap['default']
+  }
+
+  const handlePaymentComplete = (paymentData) => {
+    console.log('Pagamento concluído:', paymentData)
+    // Aqui você pode enviar para o backend
+    // Limpar carrinho após pagamento
+    setCart([])
+    setShowPaymentModal(false)
   }
 
   return (
@@ -332,13 +342,33 @@ const PDV = () => {
                 <h3>TOTAL: {formatPrice(getTotal())}</h3>
               </div>
               <div className="cart-actions">
-                <button className="btn-secondary">Limpar</button>
-                <button className="btn-primary">Finalizar Pedido</button>
+                <button 
+                  className="btn-secondary"
+                  onClick={() => setCart([])}
+                >
+                  Limpar
+                </button>
+                <button 
+                  className="btn-primary"
+                  onClick={() => setShowPaymentModal(true)}
+                  disabled={cart.length === 0}
+                >
+                  Finalizar Pedido
+                </button>
               </div>
             </div>
           )}
         </div>
       </div>
+
+      {/* Payment Modal */}
+      <PaymentModal
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        orderTotal={getTotal()}
+        orderItems={cart}
+        onPaymentComplete={handlePaymentComplete}
+      />
     </div>
   )
 }
