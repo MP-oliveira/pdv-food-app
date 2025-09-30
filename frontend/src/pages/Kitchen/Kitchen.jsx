@@ -219,89 +219,77 @@ const Kitchen = () => {
       onDragEnd={handleDragEnd}
       onClick={() => openOrderModal(order)}
     >
-      <div className="order-header">
-        <div className="order-info">
-          <span className="order-number">#{order.orderNumber}</span>
-          <span className="order-priority" style={{ color: getPriorityColor(order.priority) }}>
-            {getPriorityLabel(order.priority)}
-          </span>
-        </div>
-        <span className="order-time">
-          <Clock size={12} />
+      {/* Número do pedido e Mesa/Delivery no topo */}
+      <div className="card-top">
+        <span className="order-number">#{order.orderNumber}</span>
+        {order.tableNumber && (
+          <span className="table-badge">Mesa {order.tableNumber}</span>
+        )}
+        {order.type === 'DELIVERY' && !order.tableNumber && (
+          <span className="delivery-badge">DELIVERY</span>
+        )}
+      </div>
+
+      {/* Nome do cliente e tempo */}
+      <div className="card-customer">
+        <strong>{order.customer}</strong>
+        <span className="card-time">
+          <Clock size={14} />
           {formatTime(order.time)}
         </span>
       </div>
       
-      <div className="order-customer">
-        <strong>{order.customer}</strong>
-        {order.tableNumber && (
-          <span className="table-info">Mesa {order.tableNumber}</span>
-        )}
-        {order.type === 'DELIVERY' && (
-          <span className="delivery-info">DELIVERY</span>
-        )}
-      </div>
-      
-      <div className="order-items">
+      {/* Itens do pedido */}
+      <div className="card-items">
         {order.items.map((item, index) => (
-          <div key={index} className="order-item">
-            <span className="item-quantity">{item.quantity}x</span>
-            <span className="item-name">{item.name}</span>
-            {item.notes && (
-              <span className="item-notes">({item.notes})</span>
-            )}
-            <span className="item-time">{item.preparationTime}min</span>
+          <div key={index} className="card-item">
+            <span className="item-qty">{item.quantity}x</span>
+            <div className="item-details">
+              <span className="item-title">{item.name}</span>
+              {item.notes && (
+                <span className="item-note">({item.notes})</span>
+              )}
+            </div>
+            <span className="item-prep-time">{item.preparationTime}min</span>
           </div>
         ))}
       </div>
       
-      <div className="order-actions">
-        <button 
-          className="action-btn view-btn"
-          onClick={(e) => {
-            e.stopPropagation()
-            openOrderModal(order)
-          }}
-        >
-          <Eye size={14} />
-        </button>
-        
+      {/* Botões de ação */}
+      <div className="card-actions">
         {order.status === 'pending' && (
           <button 
-            className="action-btn start-btn"
+            className="btn-action btn-start"
             onClick={(e) => {
               e.stopPropagation()
               onMove(order.id, 'preparing')
             }}
           >
-            <ChefHat size={14} />
-            Iniciar
+            PRONTO
           </button>
         )}
         
         {order.status === 'preparing' && (
           <button 
-            className="action-btn ready-btn"
+            className="btn-action btn-ready"
             onClick={(e) => {
               e.stopPropagation()
               onMove(order.id, 'ready')
             }}
           >
-            <CheckCircle size={14} />
-            Pronto
+            ENTREGUE
           </button>
         )}
         
         {order.status === 'ready' && (
           <button 
-            className="action-btn delivered-btn"
+            className="btn-action btn-delivered"
             onClick={(e) => {
               e.stopPropagation()
-              // Aqui seria enviado para entrega
               console.log('Pedido entregue:', order.id)
             }}
           >
-            Entregue
+            CONCLUÍDO
           </button>
         )}
       </div>
@@ -459,7 +447,7 @@ const Kitchen = () => {
           onDrop={(e) => handleDrop(e, 'pending')}
         >
           <div className="column-header pending">
-            <span>⏳ Pendentes</span>
+            <span>Pendentes</span>
             <span className="order-count">{pendingOrders.length}</span>
           </div>
           <div className="order-list">
@@ -479,7 +467,7 @@ const Kitchen = () => {
           onDrop={(e) => handleDrop(e, 'preparing')}
         >
           <div className="column-header preparing">
-            <span>👨‍🍳 Preparando</span>
+            <span>Preparando</span>
             <span className="order-count">{preparingOrders.length}</span>
           </div>
           <div className="order-list">
@@ -499,7 +487,7 @@ const Kitchen = () => {
           onDrop={(e) => handleDrop(e, 'ready')}
         >
           <div className="column-header ready">
-            <span>✅ Prontos</span>
+            <span>Prontos</span>
             <span className="order-count">{readyOrders.length}</span>
           </div>
           <div className="order-list">
