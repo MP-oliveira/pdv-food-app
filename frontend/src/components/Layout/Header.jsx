@@ -5,7 +5,38 @@ import './Header.css'
 
 const Header = ({ user, onMenuClick }) => {
   const [showUserMenu, setShowUserMenu] = useState(false)
+  const [showNotifications, setShowNotifications] = useState(false)
   const { signOut } = useAuth()
+  
+  // Notificações mockadas
+  const notifications = [
+    {
+      id: 1,
+      title: 'Novo Pedido #123',
+      message: 'Mesa 5 - R$ 85,00',
+      time: 'Há 2 minutos',
+      read: false,
+      type: 'order'
+    },
+    {
+      id: 2,
+      title: 'Pedido Pronto',
+      message: 'Pedido #120 está pronto para entrega',
+      time: 'Há 5 minutos',
+      read: false,
+      type: 'kitchen'
+    },
+    {
+      id: 3,
+      title: 'Estoque Baixo',
+      message: 'Coca-Cola 600ml - 5 unidades',
+      time: 'Há 1 hora',
+      read: true,
+      type: 'stock'
+    }
+  ]
+  
+  const unreadCount = notifications.filter(n => !n.read).length
 
   const handleSignOut = async () => {
     try {
@@ -42,10 +73,60 @@ const Header = ({ user, onMenuClick }) => {
       </div>
 
       <div className="header-right">
-        <button className="header-notification-btn" aria-label="Notificações">
-          <Bell size={20} />
-          <span className="notification-badge">3</span>
-        </button>
+        <div className="header-notifications">
+          <button 
+            className="header-notification-btn" 
+            aria-label="Notificações"
+            onClick={() => setShowNotifications(!showNotifications)}
+          >
+            <Bell size={20} />
+            {unreadCount > 0 && (
+              <span className="notification-badge">{unreadCount}</span>
+            )}
+          </button>
+
+          {showNotifications && (
+            <div className="notifications-dropdown">
+              <div className="notifications-header">
+                <h3>Notificações</h3>
+                {unreadCount > 0 && (
+                  <span className="unread-count">{unreadCount} não lidas</span>
+                )}
+              </div>
+              
+              <div className="notifications-list">
+                {notifications.length === 0 ? (
+                  <div className="no-notifications">
+                    <Bell size={32} />
+                    <p>Nenhuma notificação</p>
+                  </div>
+                ) : (
+                  notifications.map(notification => (
+                    <div 
+                      key={notification.id} 
+                      className={`notification-item ${!notification.read ? 'unread' : ''}`}
+                    >
+                      <div className="notification-content">
+                        <h4>{notification.title}</h4>
+                        <p>{notification.message}</p>
+                        <span className="notification-time">{notification.time}</span>
+                      </div>
+                      {!notification.read && (
+                        <div className="notification-dot"></div>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+              
+              {notifications.length > 0 && (
+                <div className="notifications-footer">
+                  <button className="mark-all-read">Marcar todas como lidas</button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
 
         <div className="header-user">
           <button 
