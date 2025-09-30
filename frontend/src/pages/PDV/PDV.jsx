@@ -18,9 +18,16 @@ const PDV = () => {
     fetchCategories()
   }, [])
 
-  // Buscar produtos quando categoria ou busca mudar
+  // Buscar produtos quando categoria ou busca mudar (com debounce para busca)
   useEffect(() => {
-    fetchProducts()
+    if (searchTerm) {
+      const timer = setTimeout(() => {
+        fetchProducts()
+      }, 300) // Debounce de 300ms
+      return () => clearTimeout(timer)
+    } else {
+      fetchProducts()
+    }
   }, [selectedCategory, searchTerm])
 
   const fetchCategories = async () => {
@@ -30,18 +37,13 @@ const PDV = () => {
         .find(row => row.startsWith('auth_token='))
         ?.split('=')[1]
       
-      console.log('Token encontrado:', token ? 'Sim' : 'Não')
-      console.log('API URL:', import.meta.env.VITE_API_URL)
-      
       const response = await fetch(`${import.meta.env.VITE_API_URL}/categories`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       })
       
-      console.log('Response status:', response.status)
       const data = await response.json()
-      console.log('Categories data:', data)
       
       if (data.success) {
         // Remover duplicatas por ID
@@ -57,13 +59,10 @@ const PDV = () => {
         uniqueCategories.sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
         
         setCategories(uniqueCategories)
-        console.log('Categorias únicas carregadas:', uniqueCategories.length)
       } else {
-        console.error('Erro na resposta:', data.error)
         setError(data.error)
       }
     } catch (error) {
-      console.error('Erro ao buscar categorias:', error)
       setError('Erro ao carregar categorias')
     }
   }
@@ -86,28 +85,20 @@ const PDV = () => {
         url += `search=${encodeURIComponent(searchTerm)}&`
       }
 
-      console.log('Buscando produtos na URL:', url)
-      console.log('Categoria selecionada:', selectedCategory)
-
       const response = await fetch(url, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       })
       
-      console.log('Products response status:', response.status)
       const data = await response.json()
-      console.log('Products data:', data)
       
       if (data.success) {
         setProducts(data.data.products || [])
-        console.log('Produtos carregados:', data.data.products?.length || 0)
       } else {
-        console.error('Erro na resposta de produtos:', data.error)
         setError(data.error)
       }
     } catch (error) {
-      console.error('Erro ao buscar produtos:', error)
       setError('Erro ao carregar produtos')
     } finally {
       setLoading(false)
