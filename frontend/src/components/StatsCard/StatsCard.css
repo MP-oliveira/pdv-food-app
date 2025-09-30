@@ -1,0 +1,116 @@
+.stats-card {
+  background-color: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-6);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.stats-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.stats-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-4);
+}
+
+.stats-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--border-radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+}
+
+.stats-card-blue .stats-card-icon {
+  background-color: var(--primary);
+}
+
+.stats-card-green .stats-card-icon {
+  background-color: var(--success);
+}
+
+.stats-card-purple .stats-card-icon {
+  background-color: #8b5cf6;
+}
+
+.stats-card-orange .stats-card-icon {
+  background-color: var(--warning);
+}
+
+.stats-card-change {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.change-positive {
+  color: var(--success);
+}
+
+.change-negative {
+  color: var(--error);
+}
+
+.stats-card-content {
+  text-align: left;
+}
+
+.stats-card-title {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--gray-600);
+  margin: 0 0 var(--spacing-2) 0;
+}
+
+.stats-card-value {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--gray-900);
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .stats-card {
+    padding: var(--spacing-4);
+  }
+  
+  .stats-card-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .stats-card-value {
+    font-size: var(--font-size-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-card {
+    padding: var(--spacing-3);
+  }
+  
+  .stats-card-header {
+    margin-bottom: var(--spacing-3);
+  }
+  
+  .stats-card-icon {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .stats-card-value {
+    font-size: var(--font-size-lg);
+  }
+}

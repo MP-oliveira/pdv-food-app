@@ -1,0 +1,38 @@
+{
+  "name": "pdv-food-app",
+  "version": "1.0.0",
+  "description": "Sistema de PDV para restaurantes com React e Node.js",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:frontend\"",
+    "dev:api": "cd api && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "npm run build:api && npm run build:frontend",
+    "build:api": "cd api && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "start": "cd api && npm start",
+    "test": "npm run test:api && npm run test:frontend",
+    "test:api": "cd api && npm test",
+    "test:frontend": "cd frontend && npm test",
+    "db:migrate": "cd api && npx sequelize-cli db:migrate",
+    "db:seed": "cd api && npx sequelize-cli db:seed:all",
+    "db:reset": "cd api && npx sequelize-cli db:migrate:undo:all && npm run db:migrate && npm run db:seed"
+  },
+  "keywords": [
+    "pdv",
+    "restaurant",
+    "pos",
+    "react",
+    "nodejs",
+    "supabase"
+  ],
+  "author": "PDV Food App Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "workspaces": [
+    "api",
+    "frontend"
+  ]
+}

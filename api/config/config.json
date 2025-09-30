@@ -1,0 +1,44 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "password",
+    "database": "pdv_food_app_dev",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "logging": false,
+    "define": {
+      "timestamps": true,
+      "underscored": true,
+      "underscoredAll": true
+    }
+  },
+  "test": {
+    "username": "postgres",
+    "password": "password",
+    "database": "pdv_food_app_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "logging": false,
+    "define": {
+      "timestamps": true,
+      "underscored": true,
+      "underscoredAll": true
+    }
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "logging": false,
+    "define": {
+      "timestamps": true,
+      "underscored": true,
+      "underscoredAll": true
+    },
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
+  }
+}

@@ -1,0 +1,221 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  padding: var(--spacing-4);
+}
+
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--white);
+  border-radius: var(--border-radius-xl);
+  box-shadow: var(--shadow-xl);
+  padding: var(--spacing-8);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: var(--spacing-8);
+}
+
+.login-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background-color: var(--primary);
+  color: var(--white);
+  border-radius: 50%;
+  margin: 0 auto var(--spacing-4);
+}
+
+.login-header h1 {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: var(--spacing-2);
+}
+
+.login-header p {
+  color: var(--gray-600);
+  font-size: var(--font-size-sm);
+  margin: 0;
+}
+
+.login-form {
+  margin-bottom: var(--spacing-6);
+}
+
+.form-group {
+  margin-bottom: var(--spacing-5);
+}
+
+.form-label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: var(--spacing-2);
+}
+
+.form-input {
+  width: 100%;
+  padding: var(--spacing-3);
+  font-size: var(--font-size-sm);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--border-radius);
+  background-color: var(--white);
+  transition: var(--transition);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
+}
+
+.form-input.error {
+  border-color: var(--error);
+}
+
+.form-input.error:focus {
+  border-color: var(--error);
+  box-shadow: 0 0 0 3px rgb(239 68 68 / 0.1);
+}
+
+.password-input-container {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  right: var(--spacing-3);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--gray-500);
+  cursor: pointer;
+  padding: var(--spacing-1);
+  border-radius: var(--border-radius-sm);
+  transition: var(--transition);
+}
+
+.password-toggle:hover {
+  color: var(--gray-700);
+  background-color: var(--gray-100);
+}
+
+.form-error {
+  display: block;
+  color: var(--error);
+  font-size: var(--font-size-xs);
+  margin-top: var(--spacing-1);
+}
+
+.login-submit {
+  width: 100%;
+  justify-content: center;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  padding: var(--spacing-4);
+}
+
+.login-footer {
+  text-align: center;
+  margin-bottom: var(--spacing-6);
+}
+
+.forgot-password-link {
+  color: var(--primary);
+  font-size: var(--font-size-sm);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.forgot-password-link:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+.login-demo {
+  background-color: var(--gray-50);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-4);
+  border: 1px solid var(--gray-200);
+}
+
+.login-demo h3 {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: var(--spacing-3);
+  text-align: center;
+}
+
+.demo-accounts {
+  font-size: var(--font-size-xs);
+  color: var(--gray-600);
+}
+
+.demo-account {
+  margin-bottom: var(--spacing-2);
+  padding: var(--spacing-2);
+  background-color: var(--white);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--gray-200);
+}
+
+.demo-account strong {
+  color: var(--gray-900);
+}
+
+.demo-password {
+  text-align: center;
+  margin: var(--spacing-3) 0 0 0;
+  padding: var(--spacing-2);
+  background-color: var(--primary);
+  color: var(--white);
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .login-page {
+    padding: var(--spacing-3);
+  }
+  
+  .login-container {
+    padding: var(--spacing-6);
+  }
+  
+  .login-header h1 {
+    font-size: var(--font-size-xl);
+  }
+  
+  .login-logo {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* Animações */
+.login-container {
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
