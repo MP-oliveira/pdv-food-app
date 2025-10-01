@@ -103,12 +103,10 @@ const Orders = () => {
       }
     ]
 
-    console.log('📦 Mock Orders:', mockOrders)
     setOrders(mockOrders)
     setPendingOrders(mockOrders.filter(order => order.status === 'pending'))
     setConfirmedOrders(mockOrders.filter(order => order.status === 'confirmed'))
     setSentOrders(mockOrders.filter(order => order.status === 'sent'))
-    console.log('✅ Orders setados - Pending:', mockOrders.filter(order => order.status === 'pending').length)
     
     // Dados das mesas
     const mockTables = Array.from({ length: 20 }, (_, i) => ({
@@ -209,8 +207,6 @@ const Orders = () => {
     // Gera um número de pedido formatado
     const orderNumber = order.orderNumber || String(order.id).padStart(3, '0')
     
-    console.log('🎨 Rendering OrderCard:', order.id, order.customer)
-    
     return (
       <div 
         className="order-card"
@@ -265,18 +261,21 @@ const Orders = () => {
           )}
         </div>
         
-        {/* Total e Botões de ação */}
-        <div className="card-actions">
+        {/* Total */}
+        <div className="card-total">
           <div className="order-total-badge">
             R$ {order.total.toFixed(2).replace('.', ',')}
           </div>
-          
+        </div>
+
+        {/* Botões de ação */}
+        <div className="card-actions">
           <button 
             className="btn-action btn-print"
             onClick={(e) => handlePrintReceipt(order, 'customer', e)}
             title="Imprimir Cupom"
           >
-            <Printer size={25} />
+            <Printer size={22} />
           </button>
 
           <button 
@@ -287,7 +286,7 @@ const Orders = () => {
             }}
             title="Cancelar pedido"
           >
-            <XCircle size={18} />
+            <XCircle size={22} />
           </button>
           
           {order.status === 'pending' && (
@@ -492,21 +491,21 @@ const Orders = () => {
   )
 
   return (
-    <div className="orders-container">
-      <div className="orders-header">
+    <div className="orders-page">
+      <div className="orders-page-header">
         <h1>Gestão de Pedidos</h1>
         
         {/* Abas */}
-        <div className="tabs-container">
+        <div className="orders-tabs">
           <button 
-            className={`tab-button ${activeTab === 'orders' ? 'active' : ''}`}
+            className={`orders-tab-btn ${activeTab === 'orders' ? 'active' : ''}`}
             onClick={() => setActiveTab('orders')}
           >
             <Grid3X3 size={16} />
             Pedidos
           </button>
           <button 
-            className={`tab-button ${activeTab === 'tables' ? 'active' : ''}`}
+            className={`orders-tab-btn ${activeTab === 'tables' ? 'active' : ''}`}
             onClick={() => setActiveTab('tables')}
           >
             <Users size={16} />
@@ -515,29 +514,29 @@ const Orders = () => {
         </div>
 
         <div className="orders-stats">
-          <div className="stat-card">
-            <span className="stat-label">Pedidos</span>
-            <span className="stat-value">{orders.length}</span>
+          <div className="orders-stat-card">
+            <span className="orders-stat-label">Pedidos</span>
+            <span className="orders-stat-value">{orders.length}</span>
           </div>
-          <div className="stat-card">
-            <span className="stat-label">Pendentes</span>
-            <span className="stat-value">{pendingOrders.length}</span>
+          <div className="orders-stat-card">
+            <span className="orders-stat-label">Pendentes</span>
+            <span className="orders-stat-value">{pendingOrders.length}</span>
           </div>
-          <div className="stat-card">
-            <span className="stat-label">Confirmados</span>
-            <span className="stat-value">{confirmedOrders.length}</span>
+          <div className="orders-stat-card">
+            <span className="orders-stat-label">Confirmados</span>
+            <span className="orders-stat-value">{confirmedOrders.length}</span>
           </div>
-          <div className="stat-card">
-            <span className="stat-label">Enviados</span>
-            <span className="stat-value">{sentOrders.length}</span>
+          <div className="orders-stat-card">
+            <span className="orders-stat-label">Enviados</span>
+            <span className="orders-stat-value">{sentOrders.length}</span>
           </div>
-          <div className="stat-card">
-            <span className="stat-label">Mesas Ocupadas</span>
-            <span className="stat-value">{tables.filter(t => t.isOccupied).length}</span>
+          <div className="orders-stat-card">
+            <span className="orders-stat-label">Mesas Ocupadas</span>
+            <span className="orders-stat-value">{tables.filter(t => t.isOccupied).length}</span>
           </div>
-          <div className="stat-card">
-            <span className="stat-label">Total</span>
-            <span className="stat-value">
+          <div className="orders-stat-card">
+            <span className="orders-stat-label">Total</span>
+            <span className="orders-stat-value">
               R$ {orders.reduce((sum, order) => sum + order.total, 0).toFixed(2).replace('.', ',')}
             </span>
           </div>
@@ -547,20 +546,15 @@ const Orders = () => {
       {activeTab === 'orders' ? (
         <div className="orders-board">
           <div 
-            className="order-column"
+            className="orders-column"
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, 'pending')}
           >
-            <div className="column-header pending">
+            <div className="orders-column-header pending">
               <span>Pendentes</span>
-              <span className="order-count">{pendingOrders.length}</span>
+              <span className="orders-count">{pendingOrders.length}</span>
             </div>
-            <div className="order-list">
-              {console.log('🔍 Rendering pendingOrders:', pendingOrders)}
-              <div style={{background: 'red', color: 'white', padding: '20px', margin: '10px'}}>
-                TESTE: {pendingOrders.length} pedidos pendentes
-              </div>
-              {pendingOrders.length === 0 && <p style={{padding: '20px', color: '#999'}}>Nenhum pedido pendente</p>}
+            <div className="orders-list">
               {pendingOrders.map(order => (
                 <OrderCard 
                   key={order.id} 
@@ -572,15 +566,15 @@ const Orders = () => {
           </div>
 
           <div 
-            className="order-column"
+            className="orders-column"
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, 'confirmed')}
           >
-            <div className="column-header confirmed">
+            <div className="orders-column-header confirmed">
               <span>Confirmados</span>
-              <span className="order-count">{confirmedOrders.length}</span>
+              <span className="orders-count">{confirmedOrders.length}</span>
             </div>
-            <div className="order-list">
+            <div className="orders-list">
               {confirmedOrders.map(order => (
                 <OrderCard 
                   key={order.id} 
@@ -592,15 +586,15 @@ const Orders = () => {
           </div>
 
           <div 
-            className="order-column"
+            className="orders-column"
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, 'sent')}
           >
-            <div className="column-header sent">
+            <div className="orders-column-header sent">
               <span>Enviados</span>
-              <span className="order-count">{sentOrders.length}</span>
+              <span className="orders-count">{sentOrders.length}</span>
             </div>
-            <div className="order-list">
+            <div className="orders-list">
               {sentOrders.map(order => (
                 <OrderCard 
                   key={order.id} 
