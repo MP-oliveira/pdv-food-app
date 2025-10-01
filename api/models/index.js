@@ -20,6 +20,8 @@ const TabItem = require('./TabItem');
 const StockMovement = require('./StockMovement');
 const Reservation = require('./Reservation');
 const WaitingQueue = require('./WaitingQueue');
+const LoyaltyProgram = require('./LoyaltyProgram');
+const LoyaltyTransaction = require('./LoyaltyTransaction');
 
 // Objeto com todos os modelos
 const models = {
@@ -42,6 +44,8 @@ const models = {
   StockMovement,
   Reservation,
   WaitingQueue,
+  LoyaltyProgram,
+  LoyaltyTransaction,
   sequelize
 };
 
