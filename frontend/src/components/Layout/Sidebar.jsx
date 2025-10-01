@@ -10,7 +10,8 @@ import {
   BarChart3, 
   Settings,
   X,
-  CreditCard
+  CreditCard,
+  Wallet
 } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import './Sidebar.css'
@@ -48,6 +49,12 @@ const Sidebar = ({ isOpen, onClose }) => {
       icon: ShoppingCart,
       label: 'Pedidos',
       roles: ['admin', 'garcom', 'caixa']
+    },
+    {
+      path: '/cashier',
+      icon: Wallet,
+      label: 'Caixa',
+      roles: ['admin', 'caixa']
     },
     {
       path: '/customers',

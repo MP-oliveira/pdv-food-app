@@ -12,6 +12,7 @@ import Products from './pages/Products/Products'
 import Reports from './pages/Reports/Reports'
 import Settings from './pages/Settings/Settings'
 import PDV from './pages/PDV/PDV'
+import Cashier from './pages/Cashier/Cashier'
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner'
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
         <Route path="/menu" element={<Menu />} />
         <Route path="/kitchen" element={<Kitchen />} />
         <Route path="/orders" element={<Orders />} />
+        <Route path="/cashier" element={<Cashier />} />
         <Route path="/customers" element={<Customers />} />
         <Route path="/products" element={<Products />} />
         <Route path="/reports" element={<Reports />} />
