@@ -11,7 +11,8 @@ import {
   Settings,
   X,
   CreditCard,
-  Wallet
+  Wallet,
+  Receipt
 } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import './Sidebar.css'
@@ -55,6 +56,12 @@ const Sidebar = ({ isOpen, onClose }) => {
       icon: Wallet,
       label: 'Caixa',
       roles: ['admin', 'caixa']
+    },
+    {
+      path: '/tabs',
+      icon: Receipt,
+      label: 'Comandas',
+      roles: ['admin', 'garcom', 'caixa']
     },
     {
       path: '/customers',

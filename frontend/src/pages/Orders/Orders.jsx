@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../hooks/useAuth'
-import { Clock, Users, MapPin, Phone, Eye, CheckCircle, XCircle, Grid3X3 } from 'lucide-react'
+import { Clock, Users, MapPin, Phone, Eye, CheckCircle, XCircle, Grid3X3, Printer } from 'lucide-react'
 import CancelOrderModal from '../../components/CancelOrderModal/CancelOrderModal'
+import PrintPreview from '../../components/PrintPreview/PrintPreview'
 import './Orders.css'
 
 const Orders = () => {
@@ -9,11 +10,13 @@ const Orders = () => {
   const [orders, setOrders] = useState([])
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [showModal, setShowModal] = useState(false)
-  const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('orders') // 'orders' ou 'tables'
   const [draggedOrder, setDraggedOrder] = useState(null)
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [orderToCancel, setOrderToCancel] = useState(null)
+  const [showPrintPreview, setShowPrintPreview] = useState(false)
+  const [printData, setPrintData] = useState(null)
+  const [printType, setPrintType] = useState('customer')
 
   // Estados das colunas
   const [pendingOrders, setPendingOrders] = useState([])
@@ -28,29 +31,47 @@ const Orders = () => {
     const mockOrders = [
     {
       id: 1,
+      orderNumber: 'PED-001',
         type: 'DELIVERY',
         customer: 'Maria Silva',
         time: new Date(Date.now() - 5 * 60 * 1000), // 5 minutos atrás
+        createdAt: new Date(Date.now() - 5 * 60 * 1000),
         address: 'Av. Paulista, 100 - Ap33, São Paulo-SP',
-        total: 80.00,
+        phone: '(11) 98765-4321',
+        subtotal: 41.90,
+        discount: 0,
+        serviceFee: 0,
+        tip: 0,
+        total: 41.90,
         platform: 'iFood',
         status: 'pending',
         tableNumber: null,
+        waiter: 'Admin Teste',
+        paymentMethod: 'Cartão Crédito',
         items: [
-          { name: 'X-Burger Picanha', quantity: 1, price: 24.90 },
+          { name: 'X-Burger Picanha', quantity: 1, price: 24.90, notes: 'Sem cebola' },
           { name: 'Coca-Cola 600ml', quantity: 2, price: 8.50 }
         ]
     },
     {
       id: 2,
+      orderNumber: 'PED-002',
         type: 'MESA',
         customer: 'João Santos',
         time: new Date(Date.now() - 15 * 60 * 1000), // 15 minutos atrás
+        createdAt: new Date(Date.now() - 15 * 60 * 1000),
         address: null,
-        total: 45.50,
+        phone: null,
+        subtotal: 38.40,
+        discount: 0,
+        serviceFee: 3.84,
+        tip: 0,
+        total: 42.24,
         platform: null,
         status: 'pending',
         tableNumber: 5,
+        waiter: 'Admin Teste',
+        paymentMethod: null,
         items: [
           { name: 'Pizza Margherita', quantity: 1, price: 32.90 },
           { name: 'Fanta Lata', quantity: 1, price: 5.50 }
@@ -58,14 +79,23 @@ const Orders = () => {
       },
       {
         id: 3,
+        orderNumber: 'PED-003',
         type: 'DELIVERY',
         customer: 'Ana Costa',
         time: new Date(Date.now() - 30 * 60 * 1000), // 30 minutos atrás
+        createdAt: new Date(Date.now() - 30 * 60 * 1000),
         address: 'Rua Augusta, 115 - Casa 1, São Paulo-SP',
-        total: 55.00,
+        phone: '(11) 91234-5678',
+        subtotal: 35.80,
+        discount: 5.00,
+        serviceFee: 0,
+        tip: 0,
+        total: 30.80,
         platform: 'Uber Eats',
         status: 'confirmed',
         tableNumber: null,
+        waiter: 'Admin Teste',
+        paymentMethod: 'PIX',
         items: [
           { name: 'Frango Grelhado', quantity: 1, price: 19.90 },
           { name: 'Salada Verde', quantity: 1, price: 15.90 }
@@ -73,10 +103,12 @@ const Orders = () => {
       }
     ]
 
+    console.log('📦 Mock Orders:', mockOrders)
     setOrders(mockOrders)
     setPendingOrders(mockOrders.filter(order => order.status === 'pending'))
     setConfirmedOrders(mockOrders.filter(order => order.status === 'confirmed'))
     setSentOrders(mockOrders.filter(order => order.status === 'sent'))
+    console.log('✅ Orders setados - Pending:', mockOrders.filter(order => order.status === 'pending').length)
     
     // Dados das mesas
     const mockTables = Array.from({ length: 20 }, (_, i) => ({
@@ -92,7 +124,6 @@ const Orders = () => {
     }))
     
     setTables(mockTables)
-    setLoading(false)
   }, [])
 
   const formatTime = (date) => {
@@ -150,6 +181,13 @@ const Orders = () => {
     setShowModal(true)
   }
 
+  const handlePrintReceipt = (order, type, e) => {
+    if (e) e.stopPropagation()
+    setPrintData(order)
+    setPrintType(type) // 'kitchen' ou 'customer'
+    setShowPrintPreview(true)
+  }
+
   const openCancelModal = (order) => {
     setOrderToCancel(order)
     setShowCancelModal(true)
@@ -169,7 +207,9 @@ const Orders = () => {
 
   const OrderCard = ({ order, onMove }) => {
     // Gera um número de pedido formatado
-    const orderNumber = String(order.id).padStart(3, '0')
+    const orderNumber = order.orderNumber || String(order.id).padStart(3, '0')
+    
+    console.log('🎨 Rendering OrderCard:', order.id, order.customer)
     
     return (
       <div 
@@ -231,6 +271,14 @@ const Orders = () => {
             R$ {order.total.toFixed(2).replace('.', ',')}
           </div>
           
+          <button 
+            className="btn-action btn-print"
+            onClick={(e) => handlePrintReceipt(order, 'customer', e)}
+            title="Imprimir Cupom"
+          >
+            <Printer size={25} />
+          </button>
+
           <button 
             className="btn-action btn-cancel"
             onClick={(e) => {
@@ -443,14 +491,6 @@ const Orders = () => {
     </div>
   )
 
-  if (loading) {
-    return (
-      <div className="orders-container">
-        <div className="loading">Carregando pedidos...</div>
-      </div>
-    )
-  }
-
   return (
     <div className="orders-container">
       <div className="orders-header">
@@ -516,6 +556,11 @@ const Orders = () => {
               <span className="order-count">{pendingOrders.length}</span>
             </div>
             <div className="order-list">
+              {console.log('🔍 Rendering pendingOrders:', pendingOrders)}
+              <div style={{background: 'red', color: 'white', padding: '20px', margin: '10px'}}>
+                TESTE: {pendingOrders.length} pedidos pendentes
+              </div>
+              {pendingOrders.length === 0 && <p style={{padding: '20px', color: '#999'}}>Nenhum pedido pendente</p>}
               {pendingOrders.map(order => (
                 <OrderCard 
                   key={order.id} 
@@ -587,6 +632,14 @@ const Orders = () => {
         }}
         order={orderToCancel}
         onConfirmCancel={handleCancelOrder}
+      />
+
+      {/* Print Preview Modal */}
+      <PrintPreview
+        isOpen={showPrintPreview}
+        onClose={() => setShowPrintPreview(false)}
+        type={printType}
+        data={printData}
       />
     </div>
   )

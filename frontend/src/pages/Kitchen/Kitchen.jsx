@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '../../hooks/useAuth'
-import { Clock, Users, ChefHat, Eye, CheckCircle, XCircle, AlertCircle } from 'lucide-react'
+import { Clock, Users, ChefHat, Eye, CheckCircle, XCircle, AlertCircle, Printer } from 'lucide-react'
+import PrintPreview from '../../components/PrintPreview/PrintPreview'
 import './Kitchen.css'
 
 const Kitchen = () => {
@@ -10,6 +11,8 @@ const Kitchen = () => {
   const [showModal, setShowModal] = useState(false)
   const [loading, setLoading] = useState(true)
   const [draggedOrder, setDraggedOrder] = useState(null)
+  const [showPrintPreview, setShowPrintPreview] = useState(false)
+  const [printData, setPrintData] = useState(null)
 
   // Estados das colunas da cozinha
   const [pendingOrders, setPendingOrders] = useState([])
@@ -211,6 +214,12 @@ const Kitchen = () => {
     setShowModal(true)
   }
 
+  const handlePrintKitchen = (order, e) => {
+    if (e) e.stopPropagation()
+    setPrintData(order)
+    setShowPrintPreview(true)
+  }
+
   const KitchenOrderCard = ({ order, onMove }) => (
     <div 
       className="kitchen-order-card"
@@ -257,6 +266,14 @@ const Kitchen = () => {
       
       {/* Botões de ação */}
       <div className="card-actions">
+        <button 
+          className="btn-action btn-print"
+          onClick={(e) => handlePrintKitchen(order, e)}
+          title="Imprimir Comanda"
+        >
+          <Printer size={25} />
+        </button>
+
         {order.status === 'pending' && (
           <button 
             className="btn-action btn-start"
@@ -503,6 +520,14 @@ const Kitchen = () => {
       </div>
 
       {showModal && <OrderModal />}
+      
+      {/* Print Preview Modal */}
+      <PrintPreview
+        isOpen={showPrintPreview}
+        onClose={() => setShowPrintPreview(false)}
+        type="kitchen"
+        data={printData}
+      />
     </div>
   )
 }

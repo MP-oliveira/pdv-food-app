@@ -15,6 +15,8 @@ const Expense = require('./Expense');
 const Notification = require('./Notification');
 const Cashier = require('./Cashier');
 const CashierTransaction = require('./CashierTransaction');
+const Tab = require('./Tab');
+const TabItem = require('./TabItem');
 
 // Objeto com todos os modelos
 const models = {
@@ -32,6 +34,8 @@ const models = {
   Notification,
   Cashier,
   CashierTransaction,
+  Tab,
+  TabItem,
   sequelize
 };
 

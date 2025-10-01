@@ -346,6 +346,23 @@
   background: #f7f9fa;
 }
 
+.btn-print {
+  background: white !important;
+  color: #1e293b !important;
+  border: 3px solid #1e293b !important;
+  padding: 8px 12px !important;
+  min-width: auto !important;
+  flex: 0 0 auto !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-print:hover {
+  background: #f1f5f9 !important;
+  border-color: #0f172a !important;
+}
+
 .btn-action {
   border: none;
   border-radius: 12px;

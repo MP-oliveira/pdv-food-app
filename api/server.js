@@ -75,6 +75,7 @@ app.use('/api/expenses', expenseRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/cashier', require('./routes/cashier'));
+app.use('/api/tabs', require('./routes/tabs'));
 
 // Middleware de tratamento de erros
 app.use((err, req, res, next) => {
