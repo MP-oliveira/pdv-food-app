@@ -20,6 +20,9 @@ const PDV = () => {
   const [showSplitModal, setShowSplitModal] = useState(false)
   const [discount, setDiscount] = useState(null)
   const [splitData, setSplitData] = useState(null)
+  const [serviceFee, setServiceFee] = useState(10) // 10% padrão
+  const [customTip, setCustomTip] = useState(0)
+  const [tipPercentage, setTipPercentage] = useState(0)
 
   // Buscar categorias
   useEffect(() => {
@@ -162,12 +165,23 @@ const PDV = () => {
     return cart.reduce((total, item) => total + (parseFloat(item.price) * item.quantity), 0)
   }
 
+  const getServiceFeeAmount = () => {
+    return (getSubtotal() * serviceFee) / 100
+  }
+
+  const getTipAmount = () => {
+    if (customTip > 0) return customTip
+    if (tipPercentage > 0) return (getSubtotal() * tipPercentage) / 100
+    return 0
+  }
+
   const getTotal = () => {
     const subtotal = getSubtotal()
-    if (discount) {
-      return subtotal - discount.amount
-    }
-    return subtotal
+    const serviceFeeAmount = getServiceFeeAmount()
+    const tipAmount = getTipAmount()
+    const discountAmount = discount ? discount.amount : 0
+    
+    return subtotal + serviceFeeAmount + tipAmount - discountAmount
   }
 
   const handleApplyDiscount = (discountData) => {
@@ -385,6 +399,60 @@ const PDV = () => {
                 <div className="subtotal-row">
                   <span>Subtotal:</span>
                   <span>{formatPrice(getSubtotal())}</span>
+                </div>
+                
+                {serviceFee > 0 && (
+                  <div className="service-fee-row">
+                    <span>Taxa de Serviço ({serviceFee}%):</span>
+                    <span>{formatPrice(getServiceFeeAmount())}</span>
+                  </div>
+                )}
+
+                {/* Gorjeta */}
+                <div className="tip-section">
+                  <label>Gorjeta (Opcional):</label>
+                  <div className="tip-buttons">
+                    {[10, 15, 20].map(percent => (
+                      <button
+                        key={percent}
+                        className={`tip-btn ${tipPercentage === percent ? 'active' : ''}`}
+                        onClick={() => {
+                          setTipPercentage(percent)
+                          setCustomTip(0)
+                        }}
+                      >
+                        {percent}%
+                      </button>
+                    ))}
+                    <button
+                      className={`tip-btn ${customTip > 0 ? 'active' : ''}`}
+                      onClick={() => {
+                        const value = prompt('Digite o valor da gorjeta:')
+                        if (value) {
+                          setCustomTip(parseFloat(value))
+                          setTipPercentage(0)
+                        }
+                      }}
+                    >
+                      Custom
+                    </button>
+                    {(tipPercentage > 0 || customTip > 0) && (
+                      <button
+                        className="tip-btn-remove"
+                        onClick={() => {
+                          setTipPercentage(0)
+                          setCustomTip(0)
+                        }}
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                  {getTipAmount() > 0 && (
+                    <div className="tip-amount">
+                      + {formatPrice(getTipAmount())}
+                    </div>
+                  )}
                 </div>
                 
                 {discount && (

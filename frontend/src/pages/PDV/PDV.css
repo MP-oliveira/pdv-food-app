@@ -558,6 +558,87 @@
   margin-bottom: 0;
 }
 
+.service-fee-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* Gorjeta */
+.tip-section {
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 14px;
+  margin: 12px 0;
+}
+
+.tip-section label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 10px;
+}
+
+.tip-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.tip-btn {
+  flex: 1;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tip-btn:hover {
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+
+.tip-btn.active {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  color: white;
+}
+
+.tip-btn-remove {
+  flex: 0 0 auto;
+  width: 36px;
+  background: #fee2e2;
+  color: #ef4444;
+  border: 2px solid #fecaca;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.tip-btn-remove:hover {
+  background: #fecaca;
+}
+
+.tip-amount {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-success);
+}
+
 .total-row h3 {
   font-size: 20px;
   font-weight: 700;
