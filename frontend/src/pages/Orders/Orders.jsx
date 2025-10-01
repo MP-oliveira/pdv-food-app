@@ -214,10 +214,10 @@ const Orders = () => {
     return (
       <div 
         className="order-card"
-        draggable
+        draggable="true"
         onDragStart={(e) => handleDragStart(e, order)}
         onDragEnd={handleDragEnd}
-        onClick={() => openOrderModal(order)}
+        onDoubleClick={() => openOrderModal(order)}
       >
         {/* Número do pedido e Mesa/Delivery no topo */}
         <div className="card-top">
