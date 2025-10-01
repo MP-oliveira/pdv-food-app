@@ -29,6 +29,7 @@ const queueRoutes = require('./routes/queue');
 const qrcodeRoutes = require('./routes/qrcode');
 const loyaltyRoutes = require('./routes/loyalty');
 const backupRoutes = require('./routes/backup');
+const exportRoutes = require('./routes/export');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -92,6 +93,7 @@ app.use('/api/queue', queueRoutes);
 app.use('/api/qrcode', qrcodeRoutes);
 app.use('/api/loyalty', loyaltyRoutes);
 app.use('/api/backup', backupRoutes);
+app.use('/api/export', exportRoutes);
 
 // Middleware de tratamento de erros
 app.use((err, req, res, next) => {
