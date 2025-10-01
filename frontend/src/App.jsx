@@ -14,6 +14,7 @@ import Settings from './pages/Settings/Settings'
 import PDV from './pages/PDV/PDV'
 import Cashier from './pages/Cashier/Cashier'
 import Tabs from './pages/Tabs/Tabs'
+import StockHistory from './pages/StockHistory/StockHistory'
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner'
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
         <Route path="/tabs" element={<Tabs />} />
         <Route path="/customers" element={<Customers />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/stock-history" element={<StockHistory />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />

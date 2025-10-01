@@ -17,6 +17,7 @@ const Cashier = require('./Cashier');
 const CashierTransaction = require('./CashierTransaction');
 const Tab = require('./Tab');
 const TabItem = require('./TabItem');
+const StockMovement = require('./StockMovement');
 
 // Objeto com todos os modelos
 const models = {
@@ -36,6 +37,7 @@ const models = {
   CashierTransaction,
   Tab,
   TabItem,
+  StockMovement,
   sequelize
 };
 

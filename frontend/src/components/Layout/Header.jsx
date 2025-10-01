@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Menu, Bell, User, LogOut, Settings } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { Menu, Bell, User, LogOut, Settings, AlertTriangle } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import './Header.css'
 
@@ -7,6 +7,7 @@ const Header = ({ user, onMenuClick }) => {
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
   const { signOut } = useAuth()
+  const [lowStockProducts, setLowStockProducts] = useState([])
   
   // Notificações com estado
   const [notifications, setNotifications] = useState([
@@ -47,8 +48,51 @@ const Header = ({ user, onMenuClick }) => {
     setNotifications(prev => prev.map(n => ({ ...n, read: true })))
   }
 
+  // Buscar produtos com estoque baixo
+  useEffect(() => {
+    const fetchLowStock = async () => {
+      try {
+        const token = document.cookie
+          .split('; ')
+          .find(row => row.startsWith('auth_token='))
+          ?.split('=')[1]
+
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/stock/low-stock`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+
+        const data = await response.json()
+        if (data.success && data.data.length > 0) {
+          setLowStockProducts(data.data)
+          
+          // Adicionar notificações de estoque baixo
+          const stockNotifications = data.data.map((product, index) => ({
+            id: `stock-${product.id}`,
+            title: '⚠️ Estoque Baixo',
+            message: `${product.name}: ${product.stock?.current_quantity || 0} ${product.stock?.unit || 'un'}`,
+            time: 'Agora',
+            read: false,
+            type: 'stock',
+            severity: 'warning'
+          }))
+
+          setNotifications(prev => [...stockNotifications, ...prev.filter(n => n.type !== 'stock')])
+        }
+      } catch (error) {
+        console.error('Erro ao buscar estoque baixo:', error)
+      }
+    }
+
+    fetchLowStock()
+    // Atualizar a cada 5 minutos
+    const interval = setInterval(fetchLowStock, 5 * 60 * 1000)
+    return () => clearInterval(interval)
+  }, [])
+
   // Fechar dropdowns quando clicar fora
-  React.useEffect(() => {
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (showNotifications && !event.target.closest('.header-notifications')) {
         setShowNotifications(false)

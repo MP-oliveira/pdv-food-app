@@ -20,6 +20,9 @@ const invoiceRoutes = require('./routes/invoices');
 const expenseRoutes = require('./routes/expenses');
 const reportRoutes = require('./routes/reports');
 const notificationRoutes = require('./routes/notifications');
+const cashierRoutes = require('./routes/cashier');
+const tabRoutes = require('./routes/tabs');
+const stockRoutes = require('./routes/stock');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -74,8 +77,9 @@ app.use('/api/invoices', invoiceRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/notifications', notificationRoutes);
-app.use('/api/cashier', require('./routes/cashier'));
-app.use('/api/tabs', require('./routes/tabs'));
+app.use('/api/cashier', cashierRoutes);
+app.use('/api/tabs', tabRoutes);
+app.use('/api/stock', stockRoutes);
 
 // Middleware de tratamento de erros
 app.use((err, req, res, next) => {
