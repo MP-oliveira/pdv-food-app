@@ -28,6 +28,7 @@ const reservationRoutes = require('./routes/reservations');
 const queueRoutes = require('./routes/queue');
 const qrcodeRoutes = require('./routes/qrcode');
 const loyaltyRoutes = require('./routes/loyalty');
+const backupRoutes = require('./routes/backup');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -90,6 +91,7 @@ app.use('/api/reservations', reservationRoutes);
 app.use('/api/queue', queueRoutes);
 app.use('/api/qrcode', qrcodeRoutes);
 app.use('/api/loyalty', loyaltyRoutes);
+app.use('/api/backup', backupRoutes);
 
 // Middleware de tratamento de erros
 app.use((err, req, res, next) => {
