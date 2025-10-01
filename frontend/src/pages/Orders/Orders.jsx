@@ -154,7 +154,8 @@ const Orders = () => {
   const handleDragStart = (e, order) => {
     setDraggedOrder(order)
     e.dataTransfer.effectAllowed = 'move'
-    e.dataTransfer.setData('text/html', e.target.outerHTML)
+    e.dataTransfer.setData('application/json', JSON.stringify(order))
+    e.currentTarget.style.opacity = '0.5'
   }
 
   const handleDragOver = (e) => {
@@ -164,13 +165,16 @@ const Orders = () => {
 
   const handleDrop = (e, targetStatus) => {
     e.preventDefault()
+    e.stopPropagation()
+    
     if (draggedOrder && draggedOrder.status !== targetStatus) {
       moveOrder(draggedOrder.id, targetStatus)
     }
     setDraggedOrder(null)
   }
 
-  const handleDragEnd = () => {
+  const handleDragEnd = (e) => {
+    e.currentTarget.style.opacity = '1'
     setDraggedOrder(null)
   }
 
