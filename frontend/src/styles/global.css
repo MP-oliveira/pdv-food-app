@@ -8,6 +8,25 @@
   box-sizing: border-box;
 }
 
+/* Placeholders mais claros */
+input::placeholder,
+textarea::placeholder {
+  color: #cbd5e1 !important;
+  opacity: 1;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #cbd5e1 !important;
+  opacity: 1;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+  color: #cbd5e1 !important;
+  opacity: 1;
+}
+
 :root {
   /* Cores principais */
   --primary: #3b82f6;
