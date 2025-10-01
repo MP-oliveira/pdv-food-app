@@ -114,6 +114,17 @@ const PDV = () => {
   }
 
   const addToCart = (product) => {
+    // Verificar se produto tem estoque (se não for digital)
+    if (!product.is_digital && product.stock) {
+      const currentInCart = cart.find(item => item.id === product.id)?.quantity || 0
+      const availableStock = product.stock.current_quantity || 0
+      
+      if (currentInCart >= availableStock) {
+        alert(`Estoque insuficiente! Disponível: ${availableStock} unidades`)
+        return
+      }
+    }
+
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.id === product.id)
       if (existingItem) {
