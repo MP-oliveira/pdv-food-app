@@ -17,7 +17,8 @@ import {
   UserCheck,
   FileText,
   Clock,
-  Calendar
+  Calendar,
+  Gift
 } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import './Sidebar.css'
@@ -103,6 +104,12 @@ const Sidebar = ({ isOpen, onClose }) => {
       icon: Calendar,
       label: 'Reservas',
       roles: ['admin', 'garcom']
+    },
+    {
+      path: '/loyalty',
+      icon: Gift,
+      label: 'Fidelidade',
+      roles: ['admin', 'garcom', 'caixa']
     },
     {
       path: '/reports',

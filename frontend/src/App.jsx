@@ -18,6 +18,8 @@ import StockHistory from './pages/StockHistory/StockHistory'
 import WaiterSales from './pages/WaiterSales/WaiterSales'
 import Queue from './pages/Queue/Queue'
 import Reservations from './pages/Reservations/Reservations'
+import Loyalty from './pages/Loyalty/Loyalty'
+import DigitalMenu from './pages/DigitalMenu/DigitalMenu'
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner'
 
 function App() {
@@ -27,13 +29,17 @@ function App() {
     return <LoadingSpinner />
   }
 
+  // Rotas públicas (sem autenticação)
+  const publicRoutes = (
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/menu/:restaurantId" element={<DigitalMenu />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
+  )
+
   if (!user) {
-    return (
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
-    )
+    return publicRoutes
   }
 
   return (
@@ -53,8 +59,10 @@ function App() {
         <Route path="/waiter-sales" element={<WaiterSales />} />
         <Route path="/queue" element={<Queue />} />
         <Route path="/reservations" element={<Reservations />} />
+        <Route path="/loyalty" element={<Loyalty />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/menu/:restaurantId" element={<DigitalMenu />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </Layout>
