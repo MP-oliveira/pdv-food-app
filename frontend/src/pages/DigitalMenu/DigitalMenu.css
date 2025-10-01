@@ -1,7 +1,7 @@
 /* Digital Menu - Public Page */
 .digital-menu-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #f8fafc;
   padding-bottom: 80px;
 }
 
@@ -92,9 +92,11 @@
 .menu-categories {
   display: flex;
   gap: 12px;
-  padding: 0 20px 20px 20px;
+  padding: 20px;
   overflow-x: auto;
   scrollbar-width: none;
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .menu-categories::-webkit-scrollbar {
@@ -102,9 +104,9 @@
 }
 
 .menu-categories button {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: white;
+  color: #64748b;
+  border: 2px solid #e2e8f0;
   padding: 10px 20px;
   border-radius: 20px;
   font-size: 14px;
@@ -115,14 +117,15 @@
 }
 
 .menu-categories button:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color: #3b82f6;
+  color: #3b82f6;
+  background: #f0f9ff;
 }
 
 .menu-categories button.active {
-  background: white;
-  color: #667eea;
-  border-color: white;
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
 }
 
 /* Products Grid */

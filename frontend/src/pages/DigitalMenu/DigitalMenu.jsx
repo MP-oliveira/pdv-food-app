@@ -17,11 +17,18 @@ const DigitalMenu = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/products`)
+      // Busca produtos sem autenticação (rota pública)
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/products/public`)
+      
+      if (!response.ok) {
+        console.warn('Rota pública não disponível, usando produtos mock')
+        loadMockProducts()
+        return
+      }
+      
       const data = await response.json()
       
-      if (data.success) {
-        // Adiciona imagens do Unsplash para cada produto
+      if (data.success && data.data.length > 0) {
         const productsWithImages = data.data.map(product => ({
           ...product,
           image: getUnsplashImage(product.category)
@@ -31,12 +38,74 @@ const DigitalMenu = () => {
         // Extrai categorias únicas
         const uniqueCategories = [...new Set(data.data.map(p => p.category))]
         setCategories(uniqueCategories)
+      } else {
+        // Se não houver produtos, usa mock
+        loadMockProducts()
       }
       setLoading(false)
     } catch (error) {
       console.error('Erro ao buscar produtos:', error)
-      setLoading(false)
+      loadMockProducts()
     }
+  }
+
+  const loadMockProducts = () => {
+    const mockProducts = [
+      { id: 1, name: 'X-Burger', category: 'Lanches', price: 25.90, description: 'Hambúrguer artesanal com queijo, alface e tomate' },
+      { id: 2, name: 'X-Bacon', category: 'Lanches', price: 28.90, description: 'Hambúrguer com bacon crocante e queijo' },
+      { id: 3, name: 'Pizza Margherita', category: 'Pizzas', price: 45.00, description: 'Molho de tomate, mussarela e manjericão' },
+      { id: 4, name: 'Pizza Calabresa', category: 'Pizzas', price: 48.00, description: 'Calabresa, cebola e azeitonas' },
+      { id: 5, name: 'Coca-Cola', category: 'Bebidas', price: 8.00, description: 'Refrigerante 350ml' },
+      { id: 6, name: 'Suco Natural', category: 'Bebidas', price: 12.00, description: 'Laranja, limão ou morango' },
+      { id: 7, name: 'Petit Gateau', category: 'Sobremesas', price: 18.00, description: 'Bolo de chocolate com sorvete' },
+      { id: 8, name: 'Pudim', category: 'Sobremesas', price: 15.00, description: 'Pudim de leite condensado' },
+      { id: 9, name: 'Batata Frita', category: 'Porções', price: 22.00, description: 'Porção de batata frita crocante' },
+      { id: 10, name: 'Espaguete à Carbonara', category: 'Massas', price: 38.00, description: 'Massa com molho carbonara e bacon' },
+      { id: 11, name: 'Picanha Grelhada', category: 'Carnes', price: 65.00, description: 'Picanha ao ponto com arroz e farofa' },
+      { id: 12, name: 'Salada Caesar', category: 'Saladas', price: 28.00, description: 'Alface, croutons, parmesão e molho caesar' }
+    ]
+
+    const productsWithImages = mockProducts.map(product => ({
+      ...product,
+      image: getUnsplashImage(product.category)
+    }))
+    
+    setProducts(productsWithImages)
+    const uniqueCategories = [...new Set(mockProducts.map(p => p.category))]
+    setCategories(uniqueCategories)
+    setLoading(false)
+  }
+
+  const getColorForCategory = (category) => {
+    const colors = {
+      'Lanches': '#ef4444',
+      'Bebidas': '#3b82f6',
+      'Sobremesas': '#ec4899',
+      'Pizzas': '#f59e0b',
+      'Massas': '#10b981',
+      'Porções': '#8b5cf6',
+      'Carnes': '#dc2626',
+      'Saladas': '#22c55e',
+      'Pratos Executivos': '#06b6d4',
+      'Sucos': '#f97316'
+    }
+    return colors[category] || '#64748b'
+  }
+
+  const getEmojiForCategory = (category) => {
+    const emojis = {
+      'Lanches': '🍔',
+      'Bebidas': '🥤',
+      'Sobremesas': '🍰',
+      'Pizzas': '🍕',
+      'Massas': '🍝',
+      'Porções': '🍟',
+      'Carnes': '🥩',
+      'Saladas': '🥗',
+      'Pratos Executivos': '🍽️',
+      'Sucos': '🧃'
+    }
+    return emojis[category] || '🍴'
   }
 
   const getUnsplashImage = (category) => {
@@ -153,7 +222,19 @@ const DigitalMenu = () => {
         {filteredProducts.map(product => (
           <div key={product.id} className="product-card">
             <div className="product-image">
-              <img src={product.image} alt={product.name} />
+              <img 
+                src={getUnsplashImage(product.category)} 
+                alt={product.name}
+                onError={(e) => {
+                  // Fallback para emoji se imagem falhar
+                  e.target.style.display = 'none'
+                  e.target.parentElement.style.background = `linear-gradient(135deg, ${getColorForCategory(product.category)}, ${getColorForCategory(product.category)}dd)`
+                  e.target.parentElement.style.display = 'flex'
+                  e.target.parentElement.style.alignItems = 'center'
+                  e.target.parentElement.style.justifyContent = 'center'
+                  e.target.parentElement.innerHTML = `<span style="font-size: 80px">${getEmojiForCategory(product.category)}</span>`
+                }}
+              />
             </div>
             <div className="product-info">
               <h3>{product.name}</h3>

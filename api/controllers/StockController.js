@@ -1,5 +1,5 @@
 const { Stock, Product, StockMovement, User } = require('../models');
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 
 // Registrar movimentação de estoque
 const recordMovement = async (req, res) => {
@@ -206,7 +206,7 @@ const getLowStockProducts = async (req, res) => {
       include: [{
         model: Stock,
         as: 'stock',
-        where: sequelize.literal('"stock"."current_quantity" <= "stock"."min_quantity"'),
+        where: Sequelize.literal('"stock"."current_quantity" <= "stock"."min_quantity"'),
         required: true
       }],
       order: [[{ model: Stock, as: 'stock' }, 'current_quantity', 'ASC']]

@@ -40,7 +40,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       roles: ['admin', 'garcom', 'caixa']
     },
     {
-      path: '/menu',
+      path: '/cardapio',
       icon: MenuIcon,
       label: 'Cardápio',
       roles: ['admin', 'garcom']

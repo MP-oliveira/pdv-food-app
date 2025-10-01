@@ -22,7 +22,7 @@ const Menu = () => {
       description: 'Hambúrguer com carne, queijo, alface, tomate e molho especial',
       price: 25.90,
       category_id: 1,
-      image: '/api/placeholder/300/200',
+      image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop',
       available: true
     },
     {
@@ -31,7 +31,7 @@ const Menu = () => {
       description: 'Pizza com molho de tomate, mussarela e manjericão',
       price: 35.90,
       category_id: 1,
-      image: '/api/placeholder/300/200',
+      image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop',
       available: true
     },
     {
@@ -40,7 +40,7 @@ const Menu = () => {
       description: 'Refrigerante gelado em lata 350ml',
       price: 4.50,
       category_id: 2,
-      image: '/api/placeholder/300/200',
+      image: 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400&h=300&fit=crop',
       available: true
     },
     {
@@ -49,7 +49,7 @@ const Menu = () => {
       description: 'Suco natural de laranja ou maracujá',
       price: 8.90,
       category_id: 2,
-      image: '/api/placeholder/300/200',
+      image: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400&h=300&fit=crop',
       available: true
     },
     {
@@ -58,7 +58,7 @@ const Menu = () => {
       description: 'Pudim caseiro com calda de caramelo',
       price: 12.90,
       category_id: 3,
-      image: '/api/placeholder/300/200',
+      image: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop',
       available: true
     }
   ]

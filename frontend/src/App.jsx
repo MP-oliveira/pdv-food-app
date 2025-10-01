@@ -34,6 +34,7 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/menu/:restaurantId" element={<DigitalMenu />} />
+      <Route path="/menu" element={<DigitalMenu />} />
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   )
@@ -43,29 +44,31 @@ function App() {
   }
 
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/pdv" element={<PDV />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/kitchen" element={<Kitchen />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/cashier" element={<Cashier />} />
-        <Route path="/tabs" element={<Tabs />} />
-        <Route path="/customers" element={<Customers />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/stock-history" element={<StockHistory />} />
-        <Route path="/waiter-sales" element={<WaiterSales />} />
-        <Route path="/queue" element={<Queue />} />
-        <Route path="/reservations" element={<Reservations />} />
-        <Route path="/loyalty" element={<Loyalty />} />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/menu/:restaurantId" element={<DigitalMenu />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
-    </Layout>
+    <Routes>
+      {/* Rotas públicas (sem Layout) */}
+      <Route path="/menu/:restaurantId" element={<DigitalMenu />} />
+      <Route path="/menu" element={<DigitalMenu />} />
+      
+      {/* Rotas autenticadas (com Layout) */}
+      <Route path="/" element={<Layout><Navigate to="/dashboard" replace /></Layout>} />
+      <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
+      <Route path="/pdv" element={<Layout><PDV /></Layout>} />
+      <Route path="/cardapio" element={<Layout><Menu /></Layout>} />
+      <Route path="/kitchen" element={<Layout><Kitchen /></Layout>} />
+      <Route path="/orders" element={<Layout><Orders /></Layout>} />
+      <Route path="/cashier" element={<Layout><Cashier /></Layout>} />
+      <Route path="/tabs" element={<Layout><Tabs /></Layout>} />
+      <Route path="/customers" element={<Layout><Customers /></Layout>} />
+      <Route path="/products" element={<Layout><Products /></Layout>} />
+      <Route path="/stock-history" element={<Layout><StockHistory /></Layout>} />
+      <Route path="/waiter-sales" element={<Layout><WaiterSales /></Layout>} />
+      <Route path="/queue" element={<Layout><Queue /></Layout>} />
+      <Route path="/reservations" element={<Layout><Reservations /></Layout>} />
+      <Route path="/loyalty" element={<Layout><Loyalty /></Layout>} />
+      <Route path="/reports" element={<Layout><Reports /></Layout>} />
+      <Route path="/settings" element={<Layout><Settings /></Layout>} />
+      <Route path="*" element={<Layout><Navigate to="/dashboard" replace /></Layout>} />
+    </Routes>
   )
 }
 
