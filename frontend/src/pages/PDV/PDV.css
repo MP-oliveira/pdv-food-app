@@ -570,7 +570,7 @@
   gap: 12px;
 }
 
-.btn-secondary, .btn-primary, .btn-discount {
+.btn-secondary, .btn-primary, .btn-discount, .btn-split {
   flex: 1;
   padding: 12px 16px;
   border: none;
@@ -601,6 +601,16 @@
 
 .btn-discount:hover {
   background: #E67E22;
+  transform: translateY(-1px);
+}
+
+.btn-split {
+  background: var(--color-primary-pink);
+  color: white;
+}
+
+.btn-split:hover {
+  background: #b54d85;
   transform: translateY(-1px);
 }
 

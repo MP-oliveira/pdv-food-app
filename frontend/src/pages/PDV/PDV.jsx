@@ -3,6 +3,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { Search, Plus, Minus, ShoppingCart, Trash2 } from 'lucide-react'
 import PaymentModal from '../../components/PaymentModal/PaymentModal'
 import DiscountModal from '../../components/DiscountModal/DiscountModal'
+import SplitBillModal from '../../components/SplitBillModal/SplitBillModal'
 import './PDV.css'
 
 const PDV = () => {
@@ -16,7 +17,9 @@ const PDV = () => {
   const [error, setError] = useState(null)
   const [showPaymentModal, setShowPaymentModal] = useState(false)
   const [showDiscountModal, setShowDiscountModal] = useState(false)
+  const [showSplitModal, setShowSplitModal] = useState(false)
   const [discount, setDiscount] = useState(null)
+  const [splitData, setSplitData] = useState(null)
 
   // Buscar categorias
   useEffect(() => {
@@ -163,6 +166,13 @@ const PDV = () => {
 
   const removeDiscount = () => {
     setDiscount(null)
+  }
+
+  const handleSplitComplete = (splits) => {
+    setSplitData(splits)
+    setShowSplitModal(false)
+    console.log('Conta dividida:', splits)
+    // Aqui você pode processar cada parte individualmente
   }
 
   const formatPrice = (price) => {
@@ -411,6 +421,12 @@ const PDV = () => {
                   </button>
                 )}
                 <button 
+                  className="btn-split"
+                  onClick={() => setShowSplitModal(true)}
+                >
+                  Dividir
+                </button>
+                <button 
                   className="btn-primary"
                   onClick={() => setShowPaymentModal(true)}
                   disabled={cart.length === 0}
@@ -429,6 +445,15 @@ const PDV = () => {
         onClose={() => setShowDiscountModal(false)}
         orderTotal={getSubtotal()}
         onApplyDiscount={handleApplyDiscount}
+      />
+
+      {/* Split Bill Modal */}
+      <SplitBillModal
+        isOpen={showSplitModal}
+        onClose={() => setShowSplitModal(false)}
+        orderTotal={getTotal()}
+        orderItems={cart}
+        onSplitComplete={handleSplitComplete}
       />
 
       {/* Payment Modal */}
