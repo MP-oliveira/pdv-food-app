@@ -208,8 +208,8 @@ const Orders = () => {
   }
 
   const OrderCard = ({ order, onMove }) => {
-    // Gera um número de pedido formatado
-    const orderNumber = order.orderNumber || String(order.id).padStart(3, '0')
+    // Gera um número de pedido formatado (apenas os 3 dígitos)
+    const orderNumber = order.orderNumber ? order.orderNumber.replace('PED-', '') : String(order.id).padStart(3, '0')
     
     return (
       <div 
@@ -221,7 +221,7 @@ const Orders = () => {
       >
         {/* Número do pedido e Mesa/Delivery no topo */}
         <div className="card-top">
-          <span className="order-number">#{orderNumber}</span>
+          <span className="order-number">{orderNumber}</span>
           {order.tableNumber && (
             <span className="table-badge">Mesa {order.tableNumber}</span>
           )}
@@ -265,13 +265,6 @@ const Orders = () => {
           )}
         </div>
         
-        {/* Total */}
-        <div className="card-total">
-          <div className="order-total-badge">
-            R$ {order.total.toFixed(2).replace('.', ',')}
-          </div>
-        </div>
-
         {/* Botões de ação */}
         <div className="card-actions">
           <button 

@@ -104,65 +104,78 @@
   min-height: 0;
 }
 
-/* Columns */
+/* Columns - Igual Kitchen */
 .orders-column {
   flex: 1;
+  background: transparent;
+  border-radius: 0;
+  margin: 0 8px;
   display: flex;
   flex-direction: column;
-  background: white;
-  border-radius: 12px;
-  min-width: 0;
-  overflow: hidden;
+  box-shadow: none;
+  border: none;
 }
 
 .orders-column-header {
   padding: 16px 20px;
-  background: white;
-  border-bottom: 2px solid transparent;
+  margin-bottom: 16px;
+  border-radius: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-shrink: 0;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  border: none;
 }
 
 .orders-column-header.pending {
-  border-bottom-color: #ef4444;
+  border: none;
+  border-left: 2px solid #ef4444;
+  color: #dc2626;
+  background: white !important;
+}
+
+.orders-column-header.pending::after,
+.orders-column-header.pending::before {
+  display: none !important;
 }
 
 .orders-column-header.confirmed {
-  border-bottom-color: #10b981;
+  border: none;
+  border-left: 2px solid #10b981;
+  color: #16a34a;
+  background: white !important;
+}
+
+.orders-column-header.confirmed::after,
+.orders-column-header.confirmed::before {
+  display: none !important;
 }
 
 .orders-column-header.sent {
-  border-bottom-color: #3b82f6;
+  border: none;
+  border-left: 2px solid #3b82f6;
+  color: #2563eb;
+  background: white !important;
 }
 
-.orders-column-header span:first-child {
-  font-size: 14px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.orders-column-header.pending span:first-child {
-  color: #ef4444;
-}
-
-.orders-column-header.confirmed span:first-child {
-  color: #10b981;
-}
-
-.orders-column-header.sent span:first-child {
-  color: #3b82f6;
+.orders-column-header.sent::after,
+.orders-column-header.sent::before {
+  display: none !important;
 }
 
 .orders-count {
-  background: #f1f5f9;
-  color: #64748b;
-  border-radius: 8px;
-  padding: 4px 12px;
-  font-size: 13px;
+  background: currentColor;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
   font-weight: 700;
+  min-width: 28px;
+  text-align: center;
 }
 
 /* Order List */
@@ -192,7 +205,7 @@
   background: #94a3b8;
 }
 
-/* Order Cards - Same style as Kitchen */
+/* Order Cards - EXATAMENTE como Kitchen */
 .order-card {
   background: #f7f9fa;
   border: none;
@@ -202,8 +215,9 @@
   cursor: grab;
   transition: all 0.2s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  overflow: visible;
-  width: 100%;
+  overflow: hidden;
+  width: calc(100% + 20px);
+  margin-left: -10px;
   user-select: none;
 }
 
@@ -214,10 +228,6 @@
 
 .order-card:active {
   cursor: grabbing;
-}
-
-.order-card[draggable="true"] {
-  cursor: grab;
 }
 
 /* Card Top */
@@ -231,37 +241,32 @@
 }
 
 .order-number {
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 700;
-  color: white !important;
-  background: #3b82f6;
-  padding: 8px 16px;
-  border-radius: 8px;
-  width: 110px;
-  text-align: center;
+  color: #2c3e50;
 }
 
-.table-badge,
-.delivery-badge {
-  background: #3b82f6;
-  color: white !important;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 12px;
+.table-badge {
+  background: var(--color-primary-blue);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 10px;
+  font-size: 16px;
   font-weight: 700;
-  width: 110px;
-  text-align: center;
 }
 
 .delivery-badge {
-  background: #c65d9b;
-  color: white !important;
+  background: var(--color-primary-pink);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 /* Card Customer */
 .card-customer {
-  padding: 16px 18px;
-  padding-bottom: 16px;
+  padding: 18px 20px;
   background: white;
   display: flex;
   justify-content: space-between;
@@ -269,22 +274,23 @@
 }
 
 .card-customer strong {
-  font-size: 16px;
-  color: #1e293b;
+  font-size: 20px;
+  color: #2c3e50;
+  font-weight: 600;
 }
 
 .card-time {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
-  color: #64748b;
+  color: #7f8c8d;
+  font-size: 15px;
 }
 
 /* Card Items */
 .card-items {
   padding: 18px 20px;
-  padding-bottom: 20px;
+  padding-bottom: 53px;
   background: #f7f9fa;
 }
 
@@ -296,34 +302,45 @@
   border-bottom: 1px solid #d1d5db;
 }
 
+.card-item:first-child {
+  padding-top: 0;
+}
+
 .card-item:last-child {
   border-bottom: none;
+  padding-bottom: 0;
 }
 
 .item-qty {
+  background: #ecf0f1;
+  color: #2c3e50;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 16px;
   font-weight: 700;
-  color: #3b82f6;
-  min-width: 32px;
-  font-size: 15px;
+  min-width: 45px;
+  text-align: center;
+  flex-shrink: 0;
 }
 
 .item-details {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .item-title {
-  font-size: 15px;
-  color: #1e293b;
+  color: #2c3e50;
   font-weight: 500;
+  font-size: 17px;
+  line-height: 1.4;
 }
 
 .item-price {
+  color: #7f8c8d;
   font-size: 15px;
-  font-weight: 700;
-  color: #1e293b;
+  font-weight: 600;
 }
 
 .order-platform-info,
@@ -338,111 +355,87 @@
   color: #64748b;
 }
 
-/* Card Total */
-.card-total {
-  padding: 28px 18px;
-  background: #f7f9fa;
-  display: flex;
-  justify-content: center;
-}
-
-.order-total-badge {
-  background: #3b82f6;
-  color: white !important;
-  padding: 8px 16px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 16px;
-  text-align: center;
-}
-
-/* Card Actions */
+/* Card Actions - Igual Kitchen */
 .card-actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   padding: 0 18px 18px 18px;
   background: #f7f9fa;
+}
+
+.btn-print {
+  background: white !important;
+  color: #1e293b !important;
+  border: 3px solid #1e293b !important;
+  padding: 8px 12px !important;
+  min-width: auto !important;
+  flex: 0 0 auto !important;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-print:hover {
+  background: #f1f5f9 !important;
+  border-color: #0f172a !important;
 }
 
 .btn-action {
   border: none;
   border-radius: 12px;
+  padding: 12px 26px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  font-size: 16px;
   font-weight: 700;
-  font-size: 14px;
+  flex: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: white;
+}
+
+.btn-cancel {
+  background: #E74C3C;
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  min-width: auto;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.btn-print {
-  background: white;
-  color: #1e293b;
-  border: 3px solid #1e293b;
-  flex: 0 0 auto;
-  width: 50px;
-  height: 48px;
-  padding: 0;
-}
-
-.btn-print:hover {
-  background: #f1f5f9;
-  border-color: #0f172a;
-  transform: translateY(-1px);
-}
-
-.btn-cancel {
-  background: #ef4444;
-  color: white;
-  flex: 0 0 auto;
-  width: 50px;
-  height: 48px;
-  padding: 0;
-}
-
 .btn-cancel:hover {
-  background: #dc2626;
+  background: #C0392B;
   transform: translateY(-1px);
 }
 
 .btn-confirm {
-  background: #10b981;
-  color: white;
-  flex: 1;
-  padding: 0;
-  height: 48px;
+  background: #9B59B6;
 }
 
 .btn-confirm:hover {
-  background: #059669;
+  background: #8E44AD;
   transform: translateY(-1px);
 }
 
 .btn-send {
-  background: #3b82f6;
-  color: white;
-  flex: 1;
-  padding: 0;
-  height: 48px;
+  background: #27AE60;
 }
 
 .btn-send:hover {
-  background: #2563eb;
+  background: #229954;
   transform: translateY(-1px);
 }
 
 .btn-delivered {
-  background: #8b5cf6;
-  color: white;
-  flex: 1;
-  padding: 0;
-  height: 48px;
+  background: #3498DB;
 }
 
 .btn-delivered:hover {
-  background: #7c3aed;
+  background: #2980B9;
   transform: translateY(-1px);
 }
 

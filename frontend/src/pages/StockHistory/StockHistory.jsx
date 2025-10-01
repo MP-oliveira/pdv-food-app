@@ -102,7 +102,7 @@ const StockHistory = () => {
   return (
     <div className="stock-history-page">
       <div className="stock-history-header">
-        <h1>📦 Histórico de Movimentações</h1>
+        <h1>Histórico de Movimentações</h1>
         
         <div className="filters-section">
           <div className="filter-group">

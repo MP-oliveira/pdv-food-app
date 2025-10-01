@@ -436,7 +436,7 @@ const Kitchen = () => {
   return (
     <div className="kitchen-container">
       <div className="kitchen-header">
-        <h1>🏪 Cozinha</h1>
+        <h1>Cozinha</h1>
         <div className="kitchen-stats">
           <div className="stat-card">
             <span className="stat-label">Pendentes</span>

@@ -14,7 +14,8 @@ import {
   Wallet,
   Receipt,
   History,
-  UserCheck
+  UserCheck,
+  FileText
 } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import './Sidebar.css'
@@ -79,13 +80,13 @@ const Sidebar = ({ isOpen, onClose }) => {
     },
     {
       path: '/stock-history',
-      icon: History,
+      icon: FileText,
       label: 'Histórico Estoque',
       roles: ['admin']
     },
     {
       path: '/waiter-sales',
-      icon: UserCheck,
+      icon: FileText,
       label: 'Vendas Garçom',
       roles: ['admin']
     },

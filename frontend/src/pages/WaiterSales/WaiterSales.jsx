@@ -91,7 +91,7 @@ const WaiterSales = () => {
   return (
     <div className="waiter-sales-page">
       <div className="waiter-sales-header">
-        <h1>👨‍🍳 Vendas por Garçom</h1>
+        <h1>Vendas por Garçom</h1>
         
         <div className="period-selector">
           <button
@@ -118,7 +118,7 @@ const WaiterSales = () => {
       <div className="waiter-sales-content">
         {/* Ranking */}
         <div className="ranking-section">
-          <h2>🏆 Ranking</h2>
+          <h2>Ranking</h2>
           
           {ranking.length === 0 ? (
             <div className="empty-state">
@@ -210,7 +210,7 @@ const WaiterSales = () => {
 
             {/* Vendas por Dia */}
             <div className="sales-by-day">
-              <h3>📅 Vendas por Dia</h3>
+              <h3>Vendas por Dia</h3>
               <div className="days-list">
                 {Object.entries(waiterReport.sales_by_day || {}).map(([date, data]) => (
                   <div key={date} className="day-item">
