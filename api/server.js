@@ -26,6 +26,7 @@ const stockRoutes = require('./routes/stock');
 const waiterRoutes = require('./routes/waiters');
 const reservationRoutes = require('./routes/reservations');
 const queueRoutes = require('./routes/queue');
+const qrcodeRoutes = require('./routes/qrcode');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -86,6 +87,7 @@ app.use('/api/stock', stockRoutes);
 app.use('/api/waiters', waiterRoutes);
 app.use('/api/reservations', reservationRoutes);
 app.use('/api/queue', queueRoutes);
+app.use('/api/qrcode', qrcodeRoutes);
 
 // Middleware de tratamento de erros
 app.use((err, req, res, next) => {
