@@ -16,6 +16,8 @@ import Cashier from './pages/Cashier/Cashier'
 import Tabs from './pages/Tabs/Tabs'
 import StockHistory from './pages/StockHistory/StockHistory'
 import WaiterSales from './pages/WaiterSales/WaiterSales'
+import Queue from './pages/Queue/Queue'
+import Reservations from './pages/Reservations/Reservations'
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner'
 
 function App() {
@@ -49,6 +51,8 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/stock-history" element={<StockHistory />} />
         <Route path="/waiter-sales" element={<WaiterSales />} />
+        <Route path="/queue" element={<Queue />} />
+        <Route path="/reservations" element={<Reservations />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />

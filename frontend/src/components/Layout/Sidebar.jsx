@@ -15,7 +15,9 @@ import {
   Receipt,
   History,
   UserCheck,
-  FileText
+  FileText,
+  Clock,
+  Calendar
 } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import './Sidebar.css'
@@ -89,6 +91,18 @@ const Sidebar = ({ isOpen, onClose }) => {
       icon: FileText,
       label: 'Vendas Garçom',
       roles: ['admin']
+    },
+    {
+      path: '/queue',
+      icon: Clock,
+      label: 'Fila de Espera',
+      roles: ['admin', 'garcom']
+    },
+    {
+      path: '/reservations',
+      icon: Calendar,
+      label: 'Reservas',
+      roles: ['admin', 'garcom']
     },
     {
       path: '/reports',
