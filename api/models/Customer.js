@@ -31,6 +31,12 @@ const Customer = sequelize.define('Customer', {
     type: DataTypes.ENUM('cpf', 'cnpj'),
     allowNull: true
   },
+  loyalty_points: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+    comment: 'Pontos do programa de fidelidade'
+  },
   address: {
     type: DataTypes.JSON,
     allowNull: true,

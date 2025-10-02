@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Search, Filter, ShoppingCart, Plus, Minus } from 'lucide-react'
 import './Menu.css'
 
@@ -6,68 +6,98 @@ const Menu = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [cart, setCart] = useState([])
+  const [categories, setCategories] = useState([])
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  // Dados mockados
-  const categories = [
-    { id: 'all', name: 'Todos', color: '#3B82F6' },
-    { id: 1, name: 'Pratos Principais', color: '#FF6B6B' },
-    { id: 2, name: 'Bebidas', color: '#4ECDC4' },
-    { id: 3, name: 'Sobremesas', color: '#45B7D1' }
-  ]
+  useEffect(() => {
+    fetchCategories()
+    fetchProducts()
+  }, [])
 
-  const products = [
-    {
-      id: 1,
-      name: 'Hambúrguer Clássico',
-      description: 'Hambúrguer com carne, queijo, alface, tomate e molho especial',
-      price: 25.90,
-      category_id: 1,
-      image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop',
-      available: true
-    },
-    {
-      id: 2,
-      name: 'Pizza Margherita',
-      description: 'Pizza com molho de tomate, mussarela e manjericão',
-      price: 35.90,
-      category_id: 1,
-      image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop',
-      available: true
-    },
-    {
-      id: 3,
-      name: 'Refrigerante Lata',
-      description: 'Refrigerante gelado em lata 350ml',
-      price: 4.50,
-      category_id: 2,
-      image: 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400&h=300&fit=crop',
-      available: true
-    },
-    {
-      id: 4,
-      name: 'Suco Natural',
-      description: 'Suco natural de laranja ou maracujá',
-      price: 8.90,
-      category_id: 2,
-      image: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400&h=300&fit=crop',
-      available: true
-    },
-    {
-      id: 5,
-      name: 'Pudim de Leite',
-      description: 'Pudim caseiro com calda de caramelo',
-      price: 12.90,
-      category_id: 3,
-      image: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop',
-      available: true
+  useEffect(() => {
+    fetchProducts()
+  }, [selectedCategory, searchTerm])
+
+  const fetchCategories = async () => {
+    try {
+      const token = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('auth_token='))
+        ?.split('=')[1]
+
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/categories`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      const data = await response.json()
+      if (data.success) {
+        setCategories([{ id: 'all', name: 'Todos', color: '#3B82F6' }, ...data.data])
+      }
+    } catch (error) {
+      console.error('Erro ao buscar categorias:', error)
     }
-  ]
+  }
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true)
+      const token = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('auth_token='))
+        ?.split('=')[1]
+
+      let url = `${import.meta.env.VITE_API_URL}/products?`
+      if (selectedCategory !== 'all') {
+        url += `category_id=${selectedCategory}&`
+      }
+      if (searchTerm) {
+        url += `search=${encodeURIComponent(searchTerm)}&`
+      }
+
+      const response = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      const data = await response.json()
+      if (data.success) {
+        // Adicionar imagens do Unsplash baseado na categoria
+        const productsWithImages = (data.data.products || data.data).map(product => ({
+          ...product,
+          image: product.image_url || getUnsplashImageByCategory(product.category?.name)
+        }))
+        setProducts(productsWithImages)
+      }
+      setLoading(false)
+    } catch (error) {
+      console.error('Erro ao buscar produtos:', error)
+      setLoading(false)
+    }
+  }
+
+  const getUnsplashImageByCategory = (categoryName) => {
+    const imageMap = {
+      'Lanches': 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop',
+      'Pizzas': 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop',
+      'Bebidas': 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400&h=300&fit=crop',
+      'Sobremesas': 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop',
+      'Massas': 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400&h=300&fit=crop',
+      'Porções': 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&h=300&fit=crop',
+      'Carnes': 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=400&h=300&fit=crop',
+      'Saladas': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop'
+    }
+    return imageMap[categoryName] || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop'
+  }
 
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.description.toLowerCase().includes(searchTerm.toLowerCase())
+                         product.description?.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesCategory = selectedCategory === 'all' || product.category_id === selectedCategory
-    return matchesSearch && matchesCategory && product.available
+    return matchesSearch && matchesCategory && product.is_available !== false
   })
 
   const addToCart = (product) => {

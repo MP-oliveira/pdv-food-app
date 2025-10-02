@@ -9,7 +9,7 @@ const User = sequelize.define('User', {
   },
   supabase_id: {
     type: DataTypes.UUID,
-    allowNull: false,
+    allowNull: true, // Permitir null para usuários criados manualmente
     unique: true
   },
   name: {
@@ -23,6 +23,11 @@ const User = sequelize.define('User', {
     validate: {
       isEmail: true
     }
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: true, // Null quando autenticação via Supabase
+    comment: 'Hash bcrypt da senha (apenas para auth local)'
   },
   role: {
     type: DataTypes.ENUM('admin', 'garcom', 'caixa', 'cozinha'),

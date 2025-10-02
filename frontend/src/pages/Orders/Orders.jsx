@@ -26,103 +26,93 @@ const Orders = () => {
   // Estados das mesas
   const [tables, setTables] = useState([])
 
-  // Dados de exemplo (simulando pedidos)
+  // Buscar pedidos e mesas
   useEffect(() => {
-    const mockOrders = [
-    {
-      id: 1,
-      orderNumber: 'PED-001',
-        type: 'DELIVERY',
-        customer: 'Maria Silva',
-        time: new Date(Date.now() - 5 * 60 * 1000), // 5 minutos atrás
-        createdAt: new Date(Date.now() - 5 * 60 * 1000),
-        address: 'Av. Paulista, 100 - Ap33, São Paulo-SP',
-        phone: '(11) 98765-4321',
-        subtotal: 41.90,
-        discount: 0,
-        serviceFee: 0,
-        tip: 0,
-        total: 41.90,
-        platform: 'iFood',
-        status: 'pending',
-        tableNumber: null,
-        waiter: 'Admin Teste',
-        paymentMethod: 'Cartão Crédito',
-        items: [
-          { name: 'X-Burger Picanha', quantity: 1, price: 24.90, notes: 'Sem cebola' },
-          { name: 'Coca-Cola 600ml', quantity: 2, price: 8.50 }
-        ]
-    },
-    {
-      id: 2,
-      orderNumber: 'PED-002',
-        type: 'MESA',
-        customer: 'João Santos',
-        time: new Date(Date.now() - 15 * 60 * 1000), // 15 minutos atrás
-        createdAt: new Date(Date.now() - 15 * 60 * 1000),
-        address: null,
-        phone: null,
-        subtotal: 38.40,
-        discount: 0,
-        serviceFee: 3.84,
-        tip: 0,
-        total: 42.24,
-        platform: null,
-        status: 'pending',
-        tableNumber: 5,
-        waiter: 'Admin Teste',
-        paymentMethod: null,
-        items: [
-          { name: 'Pizza Margherita', quantity: 1, price: 32.90 },
-          { name: 'Fanta Lata', quantity: 1, price: 5.50 }
-        ]
-      },
-      {
-        id: 3,
-        orderNumber: 'PED-003',
-        type: 'DELIVERY',
-        customer: 'Ana Costa',
-        time: new Date(Date.now() - 30 * 60 * 1000), // 30 minutos atrás
-        createdAt: new Date(Date.now() - 30 * 60 * 1000),
-        address: 'Rua Augusta, 115 - Casa 1, São Paulo-SP',
-        phone: '(11) 91234-5678',
-        subtotal: 35.80,
-        discount: 5.00,
-        serviceFee: 0,
-        tip: 0,
-        total: 30.80,
-        platform: 'Uber Eats',
-        status: 'confirmed',
-        tableNumber: null,
-        waiter: 'Admin Teste',
-        paymentMethod: 'PIX',
-        items: [
-          { name: 'Frango Grelhado', quantity: 1, price: 19.90 },
-          { name: 'Salada Verde', quantity: 1, price: 15.90 }
-        ]
-      }
-    ]
-
-    setOrders(mockOrders)
-    setPendingOrders(mockOrders.filter(order => order.status === 'pending'))
-    setConfirmedOrders(mockOrders.filter(order => order.status === 'confirmed'))
-    setSentOrders(mockOrders.filter(order => order.status === 'sent'))
-    
-    // Dados das mesas
-    const mockTables = Array.from({ length: 20 }, (_, i) => ({
-      id: i + 1,
-      number: i + 1,
-      isOccupied: [2, 5, 8, 12, 15].includes(i + 1), // Mesas ocupadas
-      customerName: [2, 5, 8, 12, 15].includes(i + 1) ? 
-        ['João Silva', 'Maria Santos', 'Pedro Costa', 'Ana Lima', 'Carlos Oliveira'][[2, 5, 8, 12, 15].indexOf(i + 1)] : null,
-      startTime: [2, 5, 8, 12, 15].includes(i + 1) ? 
-        new Date(Date.now() - (Math.random() * 60 + 10) * 60 * 1000) : null, // Entre 10-70 minutos atrás
-      total: [2, 5, 8, 12, 15].includes(i + 1) ? 
-        Math.floor(Math.random() * 100 + 20) : 0
-    }))
-    
-    setTables(mockTables)
+    fetchOrders()
+    fetchTables()
+    // Atualizar a cada 30 segundos
+    const interval = setInterval(() => {
+      fetchOrders()
+      fetchTables()
+    }, 30000)
+    return () => clearInterval(interval)
   }, [])
+
+  const fetchOrders = async () => {
+    try {
+      const token = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('auth_token='))
+        ?.split('=')[1]
+
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/orders`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      const data = await response.json()
+      
+      if (data.success) {
+        const formattedOrders = data.data.map(order => ({
+          id: order.id,
+          orderNumber: order.order_number || String(order.id).padStart(3, '0'),
+          type: order.order_type === 'delivery' ? 'DELIVERY' : order.order_type === 'takeaway' ? 'RETIRADA' : 'MESA',
+          customer: order.customer?.name || 'Cliente',
+          time: new Date(order.created_at),
+          createdAt: new Date(order.created_at),
+          address: order.delivery_address?.street || null,
+          phone: order.customer?.phone || null,
+          subtotal: parseFloat(order.subtotal),
+          discount: parseFloat(order.discount_amount),
+          serviceFee: parseFloat(order.service_fee),
+          tip: parseFloat(order.tax_amount),
+          total: parseFloat(order.total),
+          platform: order.delivery_address?.platform || null,
+          status: order.status,
+          tableNumber: order.table_number,
+          waiter: order.user?.name || 'Sistema',
+          paymentMethod: order.payments?.[0]?.method || null,
+          items: order.order_items?.map(item => ({
+            name: item.product?.name || 'Produto',
+            quantity: item.quantity,
+            price: item.unit_price,
+            notes: item.notes
+          })) || []
+        }))
+
+        setOrders(formattedOrders)
+        setPendingOrders(formattedOrders.filter(order => order.status === 'pending'))
+        setConfirmedOrders(formattedOrders.filter(order => order.status === 'confirmed'))
+        setSentOrders(formattedOrders.filter(order => order.status === 'sent'))
+      }
+    } catch (error) {
+      console.error('Erro ao buscar pedidos:', error)
+    }
+  }
+
+  const fetchTables = async () => {
+    try {
+      const token = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('auth_token='))
+        ?.split('=')[1]
+
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/tables`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      const data = await response.json()
+      
+      if (data.success) {
+        setTables(data.data)
+      }
+    } catch (error) {
+      console.error('Erro ao buscar mesas:', error)
+    }
+  }
 
   const formatTime = (date) => {
     const now = new Date()

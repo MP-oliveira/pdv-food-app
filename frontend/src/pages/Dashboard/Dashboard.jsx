@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import StatsCard from '../../components/StatsCard/StatsCard'
 import RecentOrders from '../../components/RecentOrders/RecentOrders'
@@ -15,6 +15,71 @@ import './Dashboard.css'
 
 const Dashboard = () => {
   const { user } = useAuth()
+  const [stats, setStats] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchDashboardStats()
+  }, [])
+
+  const fetchDashboardStats = async () => {
+    try {
+      const token = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('auth_token='))
+        ?.split('=')[1]
+
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/reports/dashboard`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      const data = await response.json()
+      
+      if (data.success) {
+        const dashboardStats = [
+          {
+            title: 'Pedidos Hoje',
+            value: data.data.orders_today || '0',
+            change: data.data.orders_change || '0%',
+            changeType: parseFloat(data.data.orders_change) > 0 ? 'positive' : 'negative',
+            icon: ShoppingCart,
+            color: 'blue'
+          },
+          {
+            title: 'Receita Hoje',
+            value: `R$ ${(data.data.revenue_today || 0).toFixed(2).replace('.', ',')}`,
+            change: data.data.revenue_change || '0%',
+            changeType: parseFloat(data.data.revenue_change) > 0 ? 'positive' : 'negative',
+            icon: DollarSign,
+            color: 'green'
+          },
+          {
+            title: 'Clientes Ativos',
+            value: data.data.active_customers || '0',
+            change: data.data.customers_change || '0',
+            changeType: 'positive',
+            icon: Users,
+            color: 'purple'
+          },
+          {
+            title: 'Produtos em Estoque',
+            value: data.data.products_in_stock || '0',
+            change: data.data.stock_change || '0',
+            changeType: parseInt(data.data.stock_change) < 0 ? 'negative' : 'positive',
+            icon: Package,
+            color: 'orange'
+          }
+        ]
+        setStats(dashboardStats)
+      }
+      setLoading(false)
+    } catch (error) {
+      console.error('Erro ao buscar estatísticas:', error)
+      setLoading(false)
+    }
+  }
 
   const getGreeting = () => {
     const hour = new Date().getHours()
@@ -33,41 +98,6 @@ const Dashboard = () => {
     return roles[role] || role
   }
 
-  // Dados mockados para demonstração
-  const stats = [
-    {
-      title: 'Pedidos Hoje',
-      value: '24',
-      change: '+12%',
-      changeType: 'positive',
-      icon: ShoppingCart,
-      color: 'blue'
-    },
-    {
-      title: 'Receita Hoje',
-      value: 'R$ 1.247,50',
-      change: '+8%',
-      changeType: 'positive',
-      icon: DollarSign,
-      color: 'green'
-    },
-    {
-      title: 'Clientes Ativos',
-      value: '18',
-      change: '+3',
-      changeType: 'positive',
-      icon: Users,
-      color: 'purple'
-    },
-    {
-      title: 'Produtos em Estoque',
-      value: '156',
-      change: '-5',
-      changeType: 'negative',
-      icon: Package,
-      color: 'orange'
-    }
-  ]
 
   return (
     <div className="dashboard">

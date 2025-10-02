@@ -143,10 +143,10 @@ async function startServer() {
     console.log('✅ Conexão com o banco de dados Supabase estabelecida com sucesso.');
     
     // Sincronizar modelos (apenas em desenvolvimento)
-    // if (process.env.NODE_ENV === 'development') {
-    //   await sequelize.sync({ alter: true });
-    //   console.log('✅ Modelos sincronizados com o banco de dados.');
-    // }
+    if (process.env.NODE_ENV === 'development') {
+      await sequelize.sync({ alter: true });
+      console.log('✅ Modelos sincronizados com o banco de dados.');
+    }
     
     app.listen(PORT, () => {
       console.log(`🚀 Servidor rodando na porta ${PORT}`);

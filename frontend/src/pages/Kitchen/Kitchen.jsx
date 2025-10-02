@@ -19,127 +19,59 @@ const Kitchen = () => {
   const [preparingOrders, setPreparingOrders] = useState([])
   const [readyOrders, setReadyOrders] = useState([])
 
-  // Dados de exemplo (simulando pedidos da cozinha)
+  // Buscar pedidos da cozinha
   useEffect(() => {
-    const mockOrders = [
-      {
-        id: 1,
-        orderNumber: '001',
-        customer: 'Maria Silva',
-        tableNumber: 5,
-        type: 'MESA',
-        time: new Date(Date.now() - 5 * 60 * 1000), // 5 minutos atrás
-        status: 'pending',
-        priority: 'normal',
-        items: [
-          { 
-            name: 'X-Burger Picanha', 
-            quantity: 1, 
-            price: 24.90,
-            preparationTime: 15,
-            category: 'Pratos Principais',
-            notes: 'Sem cebola'
-          },
-          { 
-            name: 'Coca-Cola 600ml', 
-            quantity: 1, 
-            price: 8.50,
-            preparationTime: 0,
-            category: 'Bebidas'
-          }
-        ],
-        total: 33.40
-      },
-      {
-        id: 2,
-        orderNumber: '002',
-        customer: 'João Santos',
-        tableNumber: null,
-        type: 'DELIVERY',
-        time: new Date(Date.now() - 10 * 60 * 1000), // 10 minutos atrás
-        status: 'preparing',
-        priority: 'high',
-        items: [
-          { 
-            name: 'Pizza Margherita', 
-            quantity: 1, 
-            price: 32.90,
-            preparationTime: 30,
-            category: 'Pizzas'
-          },
-          { 
-            name: 'Fanta Lata 310ml', 
-            quantity: 2, 
-            price: 5.50,
-            preparationTime: 0,
-            category: 'Bebidas'
-          }
-        ],
-        total: 43.90
-      },
-      {
-        id: 3,
-        orderNumber: '003',
-        customer: 'Ana Costa',
-        tableNumber: 3,
-        type: 'MESA',
-        time: new Date(Date.now() - 15 * 60 * 1000), // 15 minutos atrás
-        status: 'ready',
-        priority: 'normal',
-        items: [
-          { 
-            name: 'Frango Grelhado', 
-            quantity: 1, 
-            price: 19.90,
-            preparationTime: 20,
-            category: 'Pratos Principais'
-          },
-          { 
-            name: 'Salada Verde', 
-            quantity: 1, 
-            price: 15.90,
-            preparationTime: 5,
-            category: 'Saladas'
-          }
-        ],
-        total: 35.80
-      },
-      {
-        id: 4,
-        orderNumber: '004',
-        customer: 'Pedro Lima',
-        tableNumber: 7,
-        type: 'MESA',
-        time: new Date(Date.now() - 3 * 60 * 1000), // 3 minutos atrás
-        status: 'pending',
-        priority: 'urgent',
-        items: [
-          { 
-            name: 'Bife à Parmegiana', 
-            quantity: 1, 
-            price: 26.90,
-            preparationTime: 25,
-            category: 'Pratos Principais',
-            notes: 'Bem passado'
-          },
-          { 
-            name: 'Batata Frita', 
-            quantity: 1, 
-            price: 12.90,
-            preparationTime: 10,
-            category: 'Aperitivos'
-          }
-        ],
-        total: 39.80
-      }
-    ]
-
-    setOrders(mockOrders)
-    setPendingOrders(mockOrders.filter(order => order.status === 'pending'))
-    setPreparingOrders(mockOrders.filter(order => order.status === 'preparing'))
-    setReadyOrders(mockOrders.filter(order => order.status === 'ready'))
-    setLoading(false)
+    fetchKitchenOrders()
+    // Atualizar a cada 30 segundos
+    const interval = setInterval(fetchKitchenOrders, 30000)
+    return () => clearInterval(interval)
   }, [])
+
+  const fetchKitchenOrders = async () => {
+    try {
+      const token = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('auth_token='))
+        ?.split('=')[1]
+
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/orders?status=pending,preparing,ready&type=kitchen`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      const data = await response.json()
+      
+      if (data.success) {
+        const kitchenOrders = data.data.map(order => ({
+          id: order.id,
+          orderNumber: order.order_number?.replace('PED-', '') || String(order.id).padStart(3, '0'),
+          customer: order.customer?.name || 'Cliente',
+          tableNumber: order.table_number,
+          type: order.order_type === 'delivery' ? 'DELIVERY' : 'MESA',
+          time: new Date(order.created_at),
+          status: order.status,
+          items: order.order_items?.map(item => ({
+            name: item.product?.name || 'Produto',
+            quantity: item.quantity,
+            price: item.unit_price,
+            preparationTime: item.product?.preparation_time || 15,
+            notes: item.notes
+          })) || [],
+          total: order.total
+        }))
+
+        setOrders(kitchenOrders)
+        setPendingOrders(kitchenOrders.filter(order => order.status === 'pending'))
+        setPreparingOrders(kitchenOrders.filter(order => order.status === 'preparing'))
+        setReadyOrders(kitchenOrders.filter(order => order.status === 'ready'))
+      }
+      setLoading(false)
+    } catch (error) {
+      console.error('Erro ao buscar pedidos da cozinha:', error)
+      setLoading(false)
+    }
+  }
 
   const formatTime = (date) => {
     const now = new Date()
